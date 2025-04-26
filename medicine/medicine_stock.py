@@ -9,7 +9,7 @@ mysql = MySQL()
 def stock():
     cur = mysql.connection.cursor()
     if request.method=='GET':
-        cur.execute("SELECT stocks.*, meds.medicine_name from pharmacy_medicines meds, pharmacy_stock stocks WHERE stocks.medicine_id=meds.id")
+        cur.execute("SELECT stocks.*, meds.medicine_name from pharmacy_medicine meds, pharmacy_stock stocks WHERE stocks.medicine_id=meds.id")
 
         items = cur.fetchall()
         cur.connection.commit()

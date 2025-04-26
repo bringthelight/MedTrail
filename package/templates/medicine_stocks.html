@@ -107,19 +107,20 @@
                     </div>
     
                       <div class="mb-3 col-md-6">
-                        <label for="description" class="form-label">Expiry Date</label>
-                        <input class="form-control" id="date" name="Exdate" placeholder="Enter Expiry Date" rows="3"></input>
+                        <label for="expiry" class="form-label">Expiry Date</label>
+                        <input class="form-control" type="date" id="date" name="Exdate" placeholder="Enter Expiry Date" min="<?php echo date('Y-m-d'); ?>"
+                        onchange="validateDate(this)"></input>
                       </div>
                   </div>
                   
 
                   <div class="mb-3">
-                    <label for="description" class="form-label">Puchase Price</label>
+                    <label for="description" class="form-label">Puchase Price (in ₹)</label>
                     <input class="form-control" id="input" name="strenght" placeholder="Enter Purchase Price" rows="3"></input>
                   </div>
 
                   <div class="mb-3">
-                    <label for="description" class="form-label">Selling Price</label>
+                    <label for="description" class="form-label">Selling Price (in ₹)</label>
                     <input class="form-control" id="input" name="menufecturer" placeholder="Enter Selling Price" rows="3"></input>
                   </div>
 
@@ -132,5 +133,26 @@
             </div>
           </div>
         </div>
+
+
+
+<script>
+  // Set min date to today
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('date').setAttribute('min', today);
+
+  function validateDate(input) {
+      const selectedDate = new Date(input.value);
+      const today = new Date();
+      
+      // Reset time portion for accurate date comparison
+      today.setHours(0,0,0,0);
+      
+      if (selectedDate < today) {
+          alert("Please select a future date for expiry");
+          input.value = ''; // Clear invalid input
+      }
+  }
+</script>
 
 {% endblock %}
