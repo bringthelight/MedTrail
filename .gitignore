@@ -66,5 +66,3 @@ coverage.xml
 .env.test.local
 .env.production.local
 
-
-soft-ui-dashboard-main/
