@@ -11,7 +11,7 @@
         <!-- Add medicine brand button -->
         
         <div class="d-flex justify-content-between">
-          <h3 class="text-secondary">Medicine Brand</h3>
+          <h3 class="text-secondary">Medicine Manufacturer</h3>
           <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#addMedicineBrandModal">
             Add Medicines Brand
           </button>
@@ -33,9 +33,7 @@
           <thead>
             <tr>
               <th style="text-align: left;">S.no</th>
-              <th>Brand Name</th>
-              <th>Company</th>
-              <th>Composition</th>
+              <th>Manufacturer Name</th>
               <th>Description</th>
               <th>Actions</th>
             </tr>
@@ -44,9 +42,7 @@
             {% for item in data %}
             <tr>
               <td style="text-align: left;">{{ loop.index }}</td>
-              <td>{{ item.brand_name }}</td>
-              <td>{{ item.company }}</td>
-              <td>{{ item.composition }}</td>
+              <td>{{ item.manufacturer_name }}</td>
               <td>{{ item.description }}</td>
               <td>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#editBrand{{item.id}}">
@@ -60,27 +56,15 @@
                     class="modal-dialog modal-lg modal-dialog-centered d-flex justify-content-center align-items-center">
                     <div class="modal-content border-0 shadow w-50">
                       <div class="modal-header form-header">
-                        <h5 class="modal-title" id="editBrand">Edit Medicine Brand</h5>
+                        <h5 class="modal-title" id="editBrand">Edit Medicine Manufecturer's Details</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                           aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
                         <form action="{{ url_for('brands.edit_brand', id=item.id) }}" method="POST">
                           <div class="mb-3">
-                            <label for="brand_name" class="form-label">Brand Name</label>
-                            <input type="text" class="form-control" id="brand_name" name="brand_name" value="{{ item.brand_name }}"
-                              required>
-                          </div>
-                          
-                          <div class="mb-3">
-                            <label for="company" class="form-label">Company</label>
-                            <input type="text" class="form-control" id="company" name="company" value="{{ item.company }}"
-                              required>
-                          </div>
-                          
-                          <div class="mb-3">
-                            <label for="composition" class="form-label">Composition</label>
-                            <input type="text" class="form-control" id="composition" name="composition" value="{{ item.composition }}"
+                            <label for="brand_name" class="form-label">Manufacturer Name</label>
+                            <input type="text" class="form-control" id="manufacturer_name" name="manufacturer_name" value="{{ item.manufacturer_name }}"
                               required>
                           </div>
 
@@ -122,18 +106,8 @@
               <div class="modal-body">
                 <form action="{{ url_for('brands.brands') }}" method="POST">
                   <div class="mb-3">
-                    <label for="brand_name" class="form-label">Brand Name</label>
-                    <input type="text" class="form-control" id="brand_name" name="brand_name" placeholder="Enter brand name" required>
-                  </div>
-                  
-                  <div class="mb-3">
-                    <label for="company" class="form-label">Company</label>
-                    <input type="text" class="form-control" id="company" name="company" placeholder="Enter company name" required>
-                  </div>
-                  
-                  <div class="mb-3">
-                    <label for="composition" class="form-label">Composition</label>
-                    <input type="text" class="form-control" id="composition" name="composition" placeholder="Enter composition">
+                    <label for="manufacturer_name" class="form-label">Manufacturer Name</label>
+                    <input type="text" class="form-control" id="manufacturer_name" name="manufacturer_name" placeholder="Enter manufacturer name" required>
                   </div>
 
                   <div class="mb-3">

@@ -10,7 +10,7 @@ def fetch():
     cur= mysql.connection.cursor()
     
     
-    cur.execute("SELECT * FROM master_unit")
+    cur.execute("SELECT * FROM master_medicine_unit")
     data = cur.fetchall()
     return render_template('medicine_unit.html', data=data)
 
@@ -24,7 +24,7 @@ def add():
     if request.method=='POST':
         unitname=request.form['medname']
         shname=request.form['shortname']
-        cur=cur.execute("INSERT INTO master_unit (unit_name,unit_short_name) VALUES (%s, %s)", (unitname, shname,))
+        cur=cur.execute("INSERT INTO master_medicine_unit (unit_name,unit_short_name) VALUES (%s, %s)", (unitname, shname,))
         
         mysql.connection.commit()
         
