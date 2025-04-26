@@ -14,11 +14,7 @@ def users():
 
     if request.method == "GET":
        
-        cur.execute("""
-            SELECT u.*, p.pharmacy_name as pharmacy_name 
-            FROM pharmacy_users u
-            LEFT JOIN pharmacy_service p ON u.pharmacy_id = p.id
-        """)
+        cur.execute("SELECT u.*, p.pharmacy_name as pharmacy_name FROM pharmacy_users u , pharmacy_service p WHERE u.pharmacy_service_id = p.id")
         users = cur.fetchall()
         
         

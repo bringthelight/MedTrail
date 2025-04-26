@@ -85,46 +85,43 @@
                   <div class="row">
                     <div class="mb-3 col-md-6">
                       <label for="type" class="form-label">Pharmacy Name</label>
-                      <input type="text" class="form-control" id="type" name="medname" placeholder="Enter Medicine type" required>
+                      <input type="text" class="form-control" id="type" name="pharname" placeholder="Enter Pharmacy Name" required>
                     </div>
                   
 
                   <div class="mb-3 col-md-6">
                     <label for="description" class="form-label">Medicine Name</label>
-                    <input class="form-control" id="input" name="genericname" placeholder="Enter Description" rows="3">
+                    <input class="form-control" id="input" name="medname" placeholder="Enter Medicine Name" rows="3">
                   </div>
                 </div>
 
                   <div class="mb-3">
                     <label for="description" class="form-label">Quantity</label>
-                    <input class="form-control" id="input" name="medscode" placeholder="Enter Description" rows="3">
+                    <input class="form-control" id="input" name="medscode" placeholder="Enter Quantity" rows="3">
                   </div>
 
                   <div class="row">
                     <div class="mb-3 col-md-6">
                       <label for="description" class="form-label">Batch Number</label>
-                      <input type="">
-                      <option value="">select</option>
-                      {% for type in med_type %}
-                        <option value="{{type.id}}">{{ type.type_name }}</option>
-                      {% endfor %}
+                      <input class="form-control" id="input" name="batch" placeholder="Enter Batch Number" rows="3">
                     </div>
     
                       <div class="mb-3 col-md-6">
-                        <label for="description" class="form-label">Expiry Date</label>
-                        <input class="form-control" id="input" name="unit_id" placeholder="Select Unit ID" rows="3"></input>
+                        <label for="expiry" class="form-label">Expiry Date</label>
+                        <input class="form-control" type="date" id="date" name="Exdate" placeholder="Enter Expiry Date" min="<?php echo date('Y-m-d'); ?>"
+                        onchange="validateDate(this)"></input>
                       </div>
                   </div>
                   
 
                   <div class="mb-3">
-                    <label for="description" class="form-label">Strength</label>
-                    <input class="form-control" id="input" name="strenght" placeholder="Enter Strength" rows="3"></input>
+                    <label for="description" class="form-label">Puchase Price (in ₹)</label>
+                    <input class="form-control" id="input" name="strenght" placeholder="Enter Purchase Price" rows="3"></input>
                   </div>
 
                   <div class="mb-3">
-                    <label for="description" class="form-label">Menufacturer</label>
-                    <input class="form-control" id="input" name="menufecturer" placeholder="Enter Manufecturer Name" rows="3"></input>
+                    <label for="description" class="form-label">Selling Price (in ₹)</label>
+                    <input class="form-control" id="input" name="menufecturer" placeholder="Enter Selling Price" rows="3"></input>
                   </div>
 
                   <div class="text-end">
@@ -136,5 +133,26 @@
             </div>
           </div>
         </div>
+
+
+
+<script>
+  // Set min date to today
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('date').setAttribute('min', today);
+
+  function validateDate(input) {
+      const selectedDate = new Date(input.value);
+      const today = new Date();
+      
+      // Reset time portion for accurate date comparison
+      today.setHours(0,0,0,0);
+      
+      if (selectedDate < today) {
+          alert("Please select a future date for expiry");
+          input.value = ''; // Clear invalid input
+      }
+  }
+</script>
 
 {% endblock %}

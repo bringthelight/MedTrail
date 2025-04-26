@@ -7,15 +7,15 @@ mysql = MySQL()
 
 @medstock.route('/medstocks', methods=['GET', 'POST'])
 def stock():
-    cur=mysql.connection.cursor()
+    cur = mysql.connection.cursor()
     if request.method=='GET':
-        
-        
-        cur.execute(" SELECT stocks.*, meds.medicine_name from pharmacy_medicine meds, pharmacy_stock stocks WHERE stocks.medicine_id=meds.id")
-        items=cur.fetchall()
+        cur.execute("SELECT stocks.*, meds.medicine_name from pharmacy_medicine meds, pharmacy_stock stocks WHERE stocks.medicine_id=meds.id")
+
+        items = cur.fetchall()
         cur.connection.commit()
         print(items)
-    return render_template('medicine_stocks.html', items=items) 
+
+    return render_template('medicine_stocks.html', items = items)
         
 
     
