@@ -1,0 +1,140 @@
+{% extends "dashboard.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+
+<div class="container-sm mt-8 px-8">
+    <div class="row">
+      <div class="col-lg-12 offset-lg-1">
+        
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-x-lg" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+          </svg></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        
+            <div class="table_heading d-flex justify-content-between">
+                <h3 class="text-secondary">Medicine Names</h3>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#addmednames">
+              Add Medicines
+            </button>
+            </div>
+    
+                <table id="med" class="table table-sm table-striped table-bordered align-middle text-nowrap small">
+                    <thead>
+                        <tr>
+                            <th>S.no</th>
+                            <th>Medicine Name</th>
+                            <th>Generic Name</th>
+                            <th>Medicine Code</th>
+                            <th>Medicine Type ID</th>
+                            <th>Medicine Unit ID</th>
+                            <th>Strength</th>
+                            <th>Menufacturer</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{item.medicine_name}}</td>
+                            <td>{{item.generic_name}}</td>
+                            <td>{{item.medicine_code}}</td>
+                            <td>{{item.type_id}}</td>
+                            <td>{{item.unit_id}}</td>
+                            <td>{{item.strength}}</td>
+                            <td>{{item.manufacturer}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                        </table>
+            
+        </div>
+    </div>
+    </div>
+            
+            
+
+        
+
+
+        <div class="modal fade" id="addmednames" tabindex="-1" aria-labelledby="addmednames"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered d-flex justify-content-center align-items-center">
+            <div class="modal-content border-0 shadow w-50">
+              <div class="modal-header form-header">
+                <h5 class="modal-title" id="addmednames">Add Medicine Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="{{ url_for('med_name.med_details') }}" method="POST">
+
+                  <div class="row">
+                    <div class="mb-3 col-md-6">
+                      <label for="type" class="form-label">Medicine Name</label>
+                      <input type="text" class="form-control" id="type" name="medsname" placeholder="Enter Medicine type" required>
+                    </div>
+                  
+
+                  <div class="mb-3 col-md-6">
+                    <label for="description" class="form-label">Generic Name</label>
+                    <input class="form-control" id="input" name="genericname" placeholder="Enter Description" rows="3"></input>
+                  </div>
+                </div>
+
+                  <div class="mb-3">
+                    <label for="description" class="form-label">Medicine Code</label>
+                    <input class="form-control" id="input" name="medscode" placeholder="Enter Description" rows="3"></input>
+                  </div>
+
+                  <div class="row">
+                    <div class="mb-3 col-md-6">
+                      <label for="description" class="form-label">Medicine Type ID</label>
+                      <select class="form-select" name="type_id" id="type_id"></select>
+                      <option value="">select</option>
+                      {% for type in med_type %}
+                        <option value="{{type.id}}">{{ type.type_name }}</option>
+                      {% endfor %}
+                    </div>
+    
+                      <div class="mb-3 col-md-6">
+                        <label for="description" class="form-label">Medicine Unit ID</label>
+                        <input class="form-control" id="input" name="unit_id" placeholder="Select Unit ID" rows="3"></input>
+                      </div>
+                  </div>
+                  
+
+                  <div class="mb-3">
+                    <label for="description" class="form-label">Strength</label>
+                    <input class="form-control" id="input" name="strenght" placeholder="Enter Strength" rows="3"></input>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="description" class="form-label">Menufacturer</label>
+                    <input class="form-control" id="input" name="menufecturer" placeholder="Enter Manufecturer Name" rows="3"></input>
+                  </div>
+
+                  <div class="text-end">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+{% endblock %}
