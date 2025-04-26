@@ -6,6 +6,7 @@ medstock = Blueprint('medstock', __name__)
 mysql = MySQL()
 
 @medstock.route('/medstocks', methods=['GET', 'POST'])
+@medstock.route('/medstocks', methods=['GET', 'POST'])
 def stock():
     cur = mysql.connection.cursor()
     if request.method=='GET':
