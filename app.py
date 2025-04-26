@@ -9,6 +9,7 @@ from data_fetch.route import data_fetch
 from action.edit import edit
 from login.pharmacy_users import users_bp
 from medicine.medicine_brand import brand_bp
+from medicine.medicine_stock import medstock
 from flask_mysqldb import MySQL
 import sys
 import os
@@ -37,6 +38,7 @@ app.register_blueprint(med_bp)
 app.register_blueprint(med_name)
 app.register_blueprint(users_bp)
 app.register_blueprint(brand_bp)
+app.register_blueprint(medstock)
 
 # app.register_blueprint(signup_bp)
 

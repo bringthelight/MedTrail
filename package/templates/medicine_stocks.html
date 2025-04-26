@@ -46,11 +46,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in data %}
+                        {% for item in items %}
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td>{{item.pharmacy_id}}</td>
-                            <td>{{item.medicine_id}}</td>
+                            <td>{{item.medicine_name}}</td>
                             <td>{{item.quantity}}</td>
                             <td>{{item.batch_number}}</td>
                             <td>{{item.expiry_date}}</td>
@@ -84,26 +84,26 @@
 
                   <div class="row">
                     <div class="mb-3 col-md-6">
-                      <label for="type" class="form-label">Medicine Name</label>
-                      <input type="text" class="form-control" id="type" name="medsname" placeholder="Enter Medicine type" required>
+                      <label for="type" class="form-label">Pharmacy Name</label>
+                      <input type="text" class="form-control" id="type" name="medname" placeholder="Enter Medicine type" required>
                     </div>
                   
 
                   <div class="mb-3 col-md-6">
-                    <label for="description" class="form-label">Generic Name</label>
+                    <label for="description" class="form-label">Medicine Name</label>
                     <input class="form-control" id="input" name="genericname" placeholder="Enter Description" rows="3">
                   </div>
                 </div>
 
                   <div class="mb-3">
-                    <label for="description" class="form-label">Medicine Code</label>
+                    <label for="description" class="form-label">Quantity</label>
                     <input class="form-control" id="input" name="medscode" placeholder="Enter Description" rows="3">
                   </div>
 
                   <div class="row">
                     <div class="mb-3 col-md-6">
-                      <label for="description" class="form-label">Medicine Type ID</label>
-                      <select class="form-select" name="type_id" id="type_id"></select>
+                      <label for="description" class="form-label">Batch Number</label>
+                      <input type="">
                       <option value="">select</option>
                       {% for type in med_type %}
                         <option value="{{type.id}}">{{ type.type_name }}</option>
@@ -111,7 +111,7 @@
                     </div>
     
                       <div class="mb-3 col-md-6">
-                        <label for="description" class="form-label">Medicine Unit ID</label>
+                        <label for="description" class="form-label">Expiry Date</label>
                         <input class="form-control" id="input" name="unit_id" placeholder="Select Unit ID" rows="3"></input>
                       </div>
                   </div>
