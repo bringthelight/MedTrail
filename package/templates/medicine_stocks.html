@@ -85,13 +85,23 @@
                   <div class="row">
                     <div class="mb-3 col-md-6">
                       <label for="type" class="form-label">Pharmacy Name</label>
-                      <input type="text" class="form-control" id="type" name="pharname" placeholder="Enter Pharmacy Name" required>
+                      <select class="form-select" name="pharmacy_names" id="type_id">
+                        <option value="">select</option>
+                        {% for pharm in pharm_name %}
+                        <option value="{{pharm.id}}">{{ pharm.pharmacy_name }}</option>
+                        {% endfor %}
+                      </select>
                     </div>
                   
 
                   <div class="mb-3 col-md-6">
                     <label for="description" class="form-label">Medicine Name</label>
-                    <input class="form-control" id="input" name="medname" placeholder="Enter Medicine Name" rows="3">
+                    <select class="form-select" name="med_names" id="type_id">
+                      <option value="">select</option>
+                      {% for med in med_names %}
+                      <option value="{{med.id}}">{{ med.medicine_name }}</option>
+                      {% endfor %}
+                    </select>
                   </div>
                 </div>
 

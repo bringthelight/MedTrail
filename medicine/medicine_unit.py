@@ -13,7 +13,7 @@ def update():
         print(request.form)
         medicine_name=request.form.get('medname')
         short_name=request.form.get('shortname')
-        cur=cur.execute("update master_unit set unit_name=%s, unit_short_name=%s where id=%s",(medicine_name,short_name,item_id))
+        cur=cur.execute("update master_medicine_unit set unit_name=%s, unit_short_name=%s where id=%s",(medicine_name,short_name,item_id))
         mysql.connection.commit()
         return redirect(url_for('data_fetch.fetch'))
     
@@ -21,7 +21,7 @@ def update():
 def delete():
     item_id=request.args.get('id')
     cur=mysql.connection.cursor()
-    cur=cur.execute("DELETE from master_unit WHERE id=%s",(item_id,))
+    cur=cur.execute("DELETE from master_medicine_unit WHERE id=%s",(item_id,))
     mysql.connection.commit()
     return redirect(url_for('data_fetch.fetch'))
         

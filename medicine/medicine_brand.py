@@ -12,15 +12,13 @@ def brands():
     cur = mysql.connection.cursor()
 
     if request.method == "GET":
-        cur.execute("SELECT * FROM medicine_brand")
-        brands = cur.fetchall()
-        return render_template('medicine_brand.html', data=brands)
+        cur.execute("SELECT * FROM master_medicine_manufacturer")
+        manufacturer = cur.fetchall()
+        return render_template('medicine_brand.html', data=manufacturer)
     
     elif request.method == "POST":
        
-        brand_name = request.form['brand_name']
-        company = request.form['company']
-        composition = request.form['composition']
+        manufacturer_name = request.form['manufacturer_name']
         description = request.form['description']
         
         
@@ -30,10 +28,10 @@ def brands():
        
         cur.execute("""
             INSERT INTO medicine_brand 
-            (brand_name, company, composition, description, added_date, added_by) 
-            VALUES (%s, %s, %s, %s, %s, %s)
+            (manufacturer_name, description, added_date, added_by) 
+            VALUES (%s, %s, %s, %s)
             """, 
-            (brand_name, company, composition, description, current_time, added_by))
+            (manufacturer_name, description, current_time, added_by))
         mysql.connection.commit()
         
         flash('Medicine brand added successfully', 'success')
@@ -46,8 +44,6 @@ def edit_brand(id):
     if request.method == "POST":
         
         brand_name = request.form['brand_name']
-        company = request.form['company']
-        composition = request.form['composition']
         description = request.form['description']
         
        
@@ -57,11 +53,11 @@ def edit_brand(id):
         # Update database
         cur.execute("""
             UPDATE medicine_brand 
-            SET brand_name = %s, company = %s, composition = %s, description = %s, 
+            SET manufacturer_name = %s,description = %s, 
                 updated_date = %s, updated_by = %s 
             WHERE id = %s
             """, 
-            (brand_name, company, composition, description, current_time, updated_by, id))
+            (brand_name, description, current_time, updated_by, id))
         mysql.connection.commit()
         
         flash('Medicine brand updated successfully', 'success')
