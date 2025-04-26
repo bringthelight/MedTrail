@@ -9,20 +9,20 @@ def mednames():
     cur = mysql.connection.cursor()
 
     if request.method == "GET":
-        cur.execute("SELECT * FROM master_medicine")
+        cur.execute("SELECT med.*, type.type_name FROM master_medicine med JOIN master_medicine_type type WHERE med.type_id = type.id")
         names = cur.fetchall()
 
         cur.execute("SELECT id, type_name FROM master_medicine_type")
         med_types = cur.fetchall()
         
         # Fetch medicine units for dropdown
-        # cur.execute("SELECT id, unit_name FROM master_medicine_unit")
-        # med_units = cur.fetchall()
+        cur.execute("SELECT id, unit_short_name FROM master_unit")
+        med_units = cur.fetchall()
         
         return render_template('meds_name.html', 
                                 data=names,
-                                med_types=med_types)
-                                # med_units=med_units)
+                                med_types=med_types,
+                                med_units=med_units)
     return render_template('meds_name.html' )
 
 

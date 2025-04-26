@@ -46,7 +46,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in data %}
+                        {% for item in items %}
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td>{{item.pharmacy_id}}</td>
@@ -84,47 +84,43 @@
 
                   <div class="row">
                     <div class="mb-3 col-md-6">
-                      <label for="type" class="form-label">Medicine Name</label>
-                      <input type="text" class="form-control" id="type" name="medsname" placeholder="Enter Medicine type" required>
+                      <label for="type" class="form-label">Pharmacy Name</label>
+                      <input type="text" class="form-control" id="type" name="pharname" placeholder="Enter Pharmacy Name" required>
                     </div>
                   
 
                   <div class="mb-3 col-md-6">
-                    <label for="description" class="form-label">Generic Name</label>
-                    <input class="form-control" id="input" name="genericname" placeholder="Enter Description" rows="3">
+                    <label for="description" class="form-label">Medicine Name</label>
+                    <input class="form-control" id="input" name="medname" placeholder="Enter Medicine Name" rows="3">
                   </div>
                 </div>
 
                   <div class="mb-3">
-                    <label for="description" class="form-label">Medicine Code</label>
-                    <input class="form-control" id="input" name="medscode" placeholder="Enter Description" rows="3">
+                    <label for="description" class="form-label">Quantity</label>
+                    <input class="form-control" id="input" name="medscode" placeholder="Enter Quantity" rows="3">
                   </div>
 
                   <div class="row">
                     <div class="mb-3 col-md-6">
-                      <label for="description" class="form-label">Medicine Type ID</label>
-                      <select class="form-select" name="type_id" id="type_id"></select>
-                      <option value="">select</option>
-                      {% for type in med_type %}
-                        <option value="{{type.id}}">{{ type.type_name }}</option>
-                      {% endfor %}
+                      <label for="description" class="form-label">Batch Number</label>
+                      <input class="form-control" id="input" name="batch" placeholder="Enter Batch Number" rows="3">
                     </div>
     
                       <div class="mb-3 col-md-6">
-                        <label for="description" class="form-label">Medicine Unit ID</label>
-                        <input class="form-control" id="input" name="unit_id" placeholder="Select Unit ID" rows="3"></input>
+                        <label for="description" class="form-label">Expiry Date</label>
+                        <input class="form-control" id="date" name="Exdate" placeholder="Enter Expiry Date" rows="3"></input>
                       </div>
                   </div>
                   
 
                   <div class="mb-3">
-                    <label for="description" class="form-label">Strength</label>
-                    <input class="form-control" id="input" name="strenght" placeholder="Enter Strength" rows="3"></input>
+                    <label for="description" class="form-label">Puchase Price</label>
+                    <input class="form-control" id="input" name="strenght" placeholder="Enter Purchase Price" rows="3"></input>
                   </div>
 
                   <div class="mb-3">
-                    <label for="description" class="form-label">Menufacturer</label>
-                    <input class="form-control" id="input" name="menufecturer" placeholder="Enter Manufecturer Name" rows="3"></input>
+                    <label for="description" class="form-label">Selling Price</label>
+                    <input class="form-control" id="input" name="menufecturer" placeholder="Enter Selling Price" rows="3"></input>
                   </div>
 
                   <div class="text-end">

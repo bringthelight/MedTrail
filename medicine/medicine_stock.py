@@ -5,11 +5,17 @@ from datetime import datetime
 medstock = Blueprint('medstock', __name__)
 mysql = MySQL()
 
-@medstock.route('/medicine', methods=['GET', 'POST'])
+@medstock.route('/medstocks', methods=['GET', 'POST'])
 def stock():
     cur = mysql.connection.cursor()
-    if request.method=='POST':
-        cur.execute("SELECT ")
+    if request.method=='GET':
+        cur.execute("SELECT stocks.*, meds.medicine_name from pharmacy_medicines meds, pharmacy_stock stocks WHERE stocks.medicine_id=meds.id")
+
+        items = cur.fetchall()
+        cur.connection.commit()
+        print(items)
+
+    return render_template('medicine_stocks.html', items = items)
         
 
     

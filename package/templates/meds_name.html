@@ -113,7 +113,12 @@
     
                       <div class="mb-3 col-md-6">
                         <label for="description" class="form-label">Medicine Unit ID</label>
-                        <input class="form-control" id="input" name="unit_id" placeholder="Select Unit ID" rows="3"></input>
+                        <select class="form-select" name="type_id" id="type_id">
+                          <option value="">select</option>
+                          {% for unit in unit_short_name %}
+                          <option value="{{unit.id}}">{{ unit.unit_short_name }}</option>
+                          {% endfor %}
+                        </select>
                       </div>
                   </div>
                   
