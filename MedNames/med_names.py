@@ -17,17 +17,17 @@ def mednames():
         
         cur.execute("SELECT id, unit_short_name FROM master_medicine_unit")
         med_units = cur.fetchall()
-        print(med_units)
 
         cur.execute("SELECT id, manufacturer_name FROM master_medicine_manufacturer")
-        manu = cur.fetchall()
-
+        manu=cur.fetchall()
+        print(manu)
+        
         return render_template('meds_name.html', 
                                 data=data,
                                 med_types=med_types,
                                 med_units=med_units,
                                 manu=manu)
-    return render_template('meds_name.html', data = data)
+    return render_template('meds_name.html' )
 
 
 
