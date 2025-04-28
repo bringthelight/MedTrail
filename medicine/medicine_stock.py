@@ -50,7 +50,37 @@ def addmedstock():
         mysql.connection.commit()
         flash('Stock added successfully....','success')
         return redirect(url_for('medstock.stock'))
+    
 
+@medstock.route('/editmedstock', methods=['POST'])
+def editmedstock():
+    cur = mysql.connection.cursor()
+    id = request.args.get('id')
+    if request.method=='POST':
+        pharmacy_id = request.form['pharmacy_id']
+        medicine_id  = request.form['medicine_id']
+        quantity = request.form['quantity']
+        batch_number = request.form['batch_number']
+        expiry_date = request.form['expiry_date']
+        purchase_price = request.form['purchase_price']
+        selling_price = request.form['selling_price']
+
+        cur.execute("UPDATE pharmacy_stock SET pharmacy_id=%s, medicine_id=%s, quantity=%s, batch_number=%s, expiry_date=%s, purchase_price=%s, selling_price=%s WHERE id=%s",
+                    (pharmacy_id, medicine_id, quantity, batch_number, expiry_date, purchase_price, selling_price, id))
         
+        mysql.connection.commit()
+        flash('Stock added successfully....','success')
+        return redirect(url_for('medstock.stock'))
 
+
+@medstock.route('/stockdelete/<int:id>', methods=['GET'])
+def stockdelete(id):
+    cur=mysql.connection.cursor()
+
+    # id = request.form.get('id')
+    cur.execute("DELETE FROM pharmacy_stock WHERE id=%s", (id,))
+    mysql.connection.commit()
+
+    flash('Stock Deleted Successfully...','success')
+    return redirect(url_for('medstock.stock'))
     
