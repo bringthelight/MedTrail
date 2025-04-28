@@ -40,6 +40,10 @@ def mednames():
 def med_details():
     cur = mysql.connection.cursor()
 
+    if 'user' not in session:
+        flash('Please login first', 'error')
+        return redirect(url_for('auth_bp.login'))
+
     if request.method == 'POST':
         medsname = request.form['medsname']
         genericname = request.form['genericname']
@@ -48,9 +52,11 @@ def med_details():
         type_id = request.form['type_id']
         strenght = request.form['strenght']
         manufacturer_id = request.form['manufacturer_id']
+        added_by = session['user']['full_name']
+        updated_by = session['user']['full_name']
 
-        cur.execute("INSERT INTO master_medicine (medicine_name, generic_name, composition, unit_id, type_id, strength, manufacturer_id) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                    (medsname, genericname, composition, unit_id, type_id, strenght, manufacturer_id))
+        cur.execute("INSERT INTO master_medicine (medicine_name, generic_name, composition, unit_id, type_id, strength, manufacturer_id, added_by, updated_by) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (medsname, genericname, composition, unit_id, type_id, strenght, manufacturer_id,added_by, updated_by))
         
         mysql.connection.commit()
         flash('Medicine Name added successfully!', 'success')
