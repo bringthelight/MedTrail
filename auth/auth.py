@@ -35,15 +35,19 @@ def login():
 @auth_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        name = request.form['name']
+        full_name = request.form['full_name']
+        mobile=request.form['mobile']
+        username=request.form['username']
         email = request.form['email']
         password = request.form['password']
+        user_type = request.form['user_type']
+        user_role= request.form['user_role']
 
-        hashed_password = hash_pass(password)  
+        password = hash_pass(password)  
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO pharmacy_users (name, email, password) VALUES (%s, %s, %s)", 
-                    (name, email, hashed_password))
+        cur.execute("INSERT INTO pharmacy_users (full_name,mobile, username, email, password, user_type, user_role) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                    (full_name, mobile, username, email, password, user_type, user_role))
         mysql.connection.commit()
 
         return redirect(url_for("auth_bp.login"))
