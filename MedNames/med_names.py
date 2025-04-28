@@ -18,11 +18,16 @@ def mednames():
         # Fetch medicine units for dropdown
         cur.execute("SELECT id, unit_short_name FROM master_medicine_unit")
         med_units = cur.fetchall()
+
+        cur.execute("SELECT id, manufacturer_name FROM master_medicine_manufacturer")
+        manu=cur.fetchall()
+        print(manu)
         
         return render_template('meds_name.html', 
                                 data=names,
                                 med_types=med_types,
-                                med_units=med_units)
+                                med_units=med_units,
+                                manu=manu)
     return render_template('meds_name.html' )
 
 
