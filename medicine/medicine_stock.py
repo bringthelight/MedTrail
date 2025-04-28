@@ -30,6 +30,27 @@ def stock():
                              pharm_name=pharm_name)
 
     return render_template('medicine_stocks.html', items = items)
+
+@medstock.route('/addmedstock', methods=['POST'])
+def addmedstock():
+    cur = mysql.connection.cursor()
+
+    if request.method=='POST':
+        pharmacy_id = request.form['pharmacy_id']
+        medicine_id  = request.form['medicine_id']
+        quantity = request.form['quantity']
+        batch_number = request.form['batch_number']
+        expiry_date = request.form['expiry_date']
+        purchase_price = request.form['purchase_price']
+        selling_price = request.form['selling_price']
+
+        cur.execute("INSERT INTO pharmacy_stock (pharmacy_id, medicine_id, quantity, batch_number, expiry_date, purchase_price, selling_price) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                    (pharmacy_id, medicine_id, quantity, batch_number, expiry_date, purchase_price, selling_price))
+        
+        mysql.connection.commit()
+        flash('Stock added successfully....','success')
+        return redirect(url_for('medstock.stock'))
+
         
 
     
