@@ -64,10 +64,10 @@ def med_details():
 
 @med_name.route('/edit_mednames', methods=['POST'])
 def edit_mednames():
+    cur = mysql.connection.cursor()
 
     id = request.args.get('id')
     medicine_name=request.args.get('medicine_name')
-    cur = mysql.connection.cursor()
 
     if request.method == 'POST':
         medicine_name = request.form['medicine_name']
@@ -85,7 +85,7 @@ def edit_mednames():
     return redirect(url_for('med_name.mednames'))
     
 
-@med_name.route('/delete_mednames/<id>', methods=['GET','POST'])
+@med_name.route('/delete_mednames/<int:id>', methods=['GET','POST'])
 def delete_mednames(id):
     cur = mysql.connection.cursor()
 

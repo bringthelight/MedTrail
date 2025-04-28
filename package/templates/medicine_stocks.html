@@ -52,7 +52,7 @@
           {% for item in items %}
           <tr>
             <td>{{ loop.index }}</td>
-            <td>{{item.pharmacy_id}}</td>
+            <td>{{item.pharmacy_name}}</td>
             <td>{{item.medicine_name}}</td>
             <td>{{item.quantity}}</td>
             <td>{{item.batch_number}}</td>
@@ -60,12 +60,90 @@
             <td>{{item.purchase_price}}</td>
             <td>{{item.selling_price}}</td>
             <td>
-              <a href="{{ url_for('med_name.edit_mednames', id=item.id) }}" data-bs-toggle="modal"
-                data-bs-target="#editmednames{{item.id}}">
+              <a href="{{ url_for('medstock.editmedstock', id=item.id) }}" data-bs-toggle="modal"
+                data-bs-target="#editmedstock{{item.id}}">
                 <i class="bi bi-pencil-square mx-3"></i>
               </a>
 
-              <a href="{{ url_for('med_name.delete_mednames', id=item.id, medicine_name=item.medicine_name) }}"
+              <div class="modal fade" id="editmedstock{{item.id}}" tabindex="-1" aria-labelledby="editmedstock{{item.id}}" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered d-flex justify-content-center align-items-center">
+                  <div class="modal-content border-0 shadow w-50">
+                    <div class="modal-header form-header">
+                      <h5 class="modal-title" id="editmedstock{{item.id}}">Edit Medicine Stock</h5>
+                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="{{ url_for('medstock.editmedstock', id=item.id) }}" method="POST">
+              
+                        <div class="row">
+                          <div class="mb-3 col-md-6">
+                            <label for="type" class="form-label">Pharmacy Name</label>
+                            <select class="form-select" name="pharmacy_id" id="type_id">
+                              <option value="">{{item.pharmacy_name}}</option>
+                              {% for pharm in pharm_name %}
+                              {% if pharm.id != item.pharmacy_id %}
+                              <option value="{{pharm.id}}">{{ pharm.pharmacy_name }}</option>
+                              {% endif %}
+                              {% endfor %}
+                            </select>
+                          </div>
+              
+              
+                          <div class="mb-3 col-md-6">
+                            <label for="description" class="form-label">Medicine Name</label>
+                            <select class="form-select" name="medicine_id" id="type_id">
+                              <option value="">{{item.medicine_name}}</option>
+                              {% for med in med_names %}
+                              {%if med.id != item.medicine_id%}
+                              <option value="{{med.id}}">{{ med.medicine_name }}</option>
+                              {%endif%}
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+              
+                        <div class="mb-3">
+                          <label for="description" class="form-label">Quantity</label>
+                          <input class="form-control" id="input" name="quantity" value="{{item.quantity}}" rows="3">
+                        </div>
+              
+                        <div class="row">
+                          <div class="mb-3 col-md-6">
+                            <label for="description" class="form-label">Batch Number</label>
+                            <input class="form-control" id="input" name="batch_number" value="{{item.batch_number}}" rows="3">
+                          </div>
+              
+                          <div class="mb-3 col-md-6">
+                            <label for="expiry" class="form-label">Expiry Date</label>
+                            <input class="form-control" type="date" id="date" name="expiry_date" value="{{item.expiry_date}}"
+                              min="<?php echo date('Y-m-d'); ?>" onchange="validateDate(this)"></input>
+                          </div>
+                        </div>
+              
+              
+                        <div class="mb-3">
+                          <label for="description" class="form-label">Puchase Price (in ₹)</label>
+                          <input class="form-control" id="input" name="purchase_price" value="{{item.purchase_price}}"
+                            rows="3"></input>
+                        </div>
+              
+                        <div class="mb-3">
+                          <label for="description" class="form-label">Selling Price (in ₹)</label>
+                          <input class="form-control" id="input" name="selling_price" value="{{item.selling_price}}"
+                            rows="3"></input>
+                        </div>
+              
+                        <div class="text-end">
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                          <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <a href="{{ url_for('medstock.stockdelete', id=item.id) }}"
                 onclick="return confirm('Are you sure you want to delete {{ item.medicine_name }}?');">
                 <i class="bi bi-trash-fill mx-3"></i>
               </a>
@@ -88,7 +166,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered d-flex justify-content-center align-items-center">
     <div class="modal-content border-0 shadow w-50">
       <div class="modal-header form-header">
-        <h5 class="modal-title" id="addmednames">Add Medicine Details</h5>
+        <h5 class="modal-title" id="addmednames">Add Medicine Stock</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
