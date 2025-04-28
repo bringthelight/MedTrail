@@ -9,21 +9,25 @@ def mednames():
     cur = mysql.connection.cursor()
 
     if request.method == "GET":
-        cur.execute("SELECT med.*, type.type_name FROM master_medicine med JOIN master_medicine_type type WHERE med.type_id = type.id")
-        names = cur.fetchall()
+        cur.execute("SELECT master_medicine.*, master_medicine_type.type_name, master_medicine_unit.unit_short_name, master_medicine_manufacturer.manufacturer_name FROM master_medicine JOIN master_medicine_type ON master_medicine.type_id = master_medicine_type.id JOIN master_medicine_unit ON master_medicine.unit_id = master_medicine_unit.id JOIN master_medicine_manufacturer ON master_medicine.manufacturer_id = master_medicine.id")
+        data = cur.fetchall()
 
         cur.execute("SELECT id, type_name FROM master_medicine_type")
         med_types = cur.fetchall()
         
-        # Fetch medicine units for dropdown
         cur.execute("SELECT id, unit_short_name FROM master_medicine_unit")
         med_units = cur.fetchall()
-        
+        print(med_units)
+
+        cur.execute("SELECT id, manufacturer_name FROM master_medicine_manufacturer")
+        manu = cur.fetchall()
+
         return render_template('meds_name.html', 
-                                data=names,
+                                data=data,
                                 med_types=med_types,
-                                med_units=med_units)
-    return render_template('meds_name.html' )
+                                med_units=med_units,
+                                manu=manu)
+    return render_template('meds_name.html', data = data)
 
 
 
@@ -34,16 +38,52 @@ def med_details():
     if request.method == 'POST':
         medsname = request.form['medsname']
         genericname = request.form['genericname']
-        medscode = request.form['medscode']
-        type_id = request.form['type_id']
+        composition = request.form['composition']
         unit_id = request.form['unit_id']
+        type_id = request.form['type_id']
         strenght = request.form['strenght']
-        menufecturer = request.form['menufecturer']
+        manufacturer_id = request.form['manufacturer_id']
 
-        cur.execute("INSERT INTO master_medicine (medicine_name, generic_name, medicine_code, type_id, unit_id, strength, manufacturer) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                    (medsname, genericname, medscode, type_id, unit_id, strenght, menufecturer))
+        cur.execute("INSERT INTO master_medicine (medicine_name, generic_name, composition, unit_id, type_id, strength, manufacturer_id) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                    (medsname, genericname, composition, unit_id, type_id, strenght, manufacturer_id))
         
         mysql.connection.commit()
         flash('Medicine Name added successfully!', 'success')
         return redirect(url_for('med_name.mednames'))
     
+
+@med_name.route('/edit_mednames', methods=['GET','POST'])
+def edit_mednames():
+    cur = mysql.connection.cursor()
+
+    id = request.args.get('id')
+    medsname=request.args.get('medsname')
+
+    if request.method == 'POST':
+        medsname = request.form['medsname']
+        genericname = request.form['genericname']
+        composition = request.form['composition']
+        unit_id = request.form['unit_id']
+        type_id = request.form['type_id']
+        strenght = request.form['strenght']
+        manufacturer_id = request.form['manufacturer_id']
+
+        cur.execute("UPDATE master_medicine SET medicine_name=%s, generic_name=%s, composition=%s, unit_id=%s, type_id=%s, strength=%s, manufacturer_id=%s WHERE id=%s",(medsname, genericname, composition, unit_id, type_id, strenght, manufacturer_id, id))
+        mysql.connection.commit()
+
+        flash(f'{medsname} updates successfuly......','success')
+        return redirect(url_for('med_name.mednames'))
+    
+
+@med_name.route('/delete_mednames/<id>', methods=['GET','POST'])
+def delete_mednames(id):
+    cur = mysql.connection.cursor()
+
+    medicine_name=request.args.get('medicine_name')
+
+
+    cur.execute("DELETE FROM master_medicine WHERE id=%s", (id,))
+    mysql.connection.commit()
+
+    flash(f'{medicine_name} Deleted successfuly......','success')
+    return redirect(url_for('med_name.mednames'))

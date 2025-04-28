@@ -9,14 +9,6 @@
     <div class="row">
       <div class="col-lg-10 offset-lg-2">
         <!-- Add medicine brand button -->
-        
-        <div class="d-flex justify-content-between">
-          <h3 class="text-secondary">Medicine Manufacturer</h3>
-          <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#addMedicineBrandModal">
-            Add Medicines Brand
-          </button>
-        </div>
-
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
@@ -27,6 +19,14 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
+        <div class="d-flex justify-content-between">
+          <h3 class="text-secondary">Medicine Manufacturer</h3>
+          <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#addMedicineBrandModal">
+            Add Medicines Manufacturer
+          </button>
+        </div>
+
+        
 
         <!-- Data Table -->
         <table id="meds" class="table table-striped" style="width:100%">
