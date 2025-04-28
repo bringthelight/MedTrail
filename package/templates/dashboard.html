@@ -268,7 +268,7 @@
         
         {% if session['user_id'] %}
         <li class="nav-item">
-          <a class="nav-link  " href="{{ url_for('auth_bp.logout') }}">
+          <a class="nav-link  " href="">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 40 44" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -352,6 +352,7 @@
             <span class="nav-link-text ms-1">Sign Up</span>
           </a>
         </li>
+        {% endif %}
       </ul>
     </div>
     <!-- <div class="sidenav-footer mx-3 ">
@@ -385,7 +386,7 @@
 
             <div class="navbar-nav ms-auto">
               {% if session['user_id'] %}
-              <a class="nav-link btn btn-primary text-grey fw-bold mt-2 mx-2" href="{{ url_for('auth_bp.logout') }}">
+              <a class="nav-link btn btn-primary text-grey fw-bold mt-2 mx-2" href="">
                 logout
               </a>
               {% else %}
@@ -394,6 +395,7 @@
               <a class="nav-link btn btn-primary text-grey fw-bold mt-2"
                 href="{{ url_for('auth_bp.signup') }}">Sign-up</a>
             </div>
+            {% endif %}
           </div>
         </nav>
       </div>

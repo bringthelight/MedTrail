@@ -52,3 +52,5 @@ def signup():
 
         return redirect(url_for("auth_bp.login"))
     return render_template('sign-up.html')  
+
+
