@@ -17,13 +17,12 @@ def edit():
     if request.method == 'POST':
         type = request.form['type']
         description = request.form['description']
-        added_by = session['user']['full_name']
         updated_by = session['user']['full_name']
 
         cur.execute("""
             UPDATE master_medicine_type
-            SET type_name=%s, description=%s, added_by=%s, updated_by=%s
-            WHERE id= %s """, (type, description, added_by, updated_by, id))
+            SET type_name=%s, description=%s, updated_by=%s
+            WHERE id= %s """, (type, description, updated_by, id))
 
         mysql.connection.commit()
         flash(f'{type_name} updated successfully!', category='success')

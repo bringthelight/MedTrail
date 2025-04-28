@@ -17,13 +17,12 @@ def medicine():
         type = request.form['type']
         description = request.form['description']
         added_by = session['user']['full_name']
-        updated_by = session['user']['full_name']
         
         cur.execute("""
                 INSERT INTO master_medicine_type 
-                (type_name, description, added_by, updated_by)
+                (type_name, description, added_by)
                 VALUES (%s, %s, %s, %s)
-            """, (type, description, added_by, updated_by))
+            """, (type, description, added_by))
             
         mysql.connection.commit()
             

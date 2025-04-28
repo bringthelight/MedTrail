@@ -53,10 +53,9 @@ def med_details():
         strenght = request.form['strenght']
         manufacturer_id = request.form['manufacturer_id']
         added_by = session['user']['full_name']
-        updated_by = session['user']['full_name']
 
-        cur.execute("INSERT INTO master_medicine (medicine_name, generic_name, composition, unit_id, type_id, strength, manufacturer_id, added_by, updated_by) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (medsname, genericname, composition, unit_id, type_id, strenght, manufacturer_id,added_by, updated_by))
+        cur.execute("INSERT INTO master_medicine (medicine_name, generic_name, composition, unit_id, type_id, strength, manufacturer_id, added_by) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    (medsname, genericname, composition, unit_id, type_id, strenght, manufacturer_id,added_by))
         
         mysql.connection.commit()
         flash('Medicine Name added successfully!', 'success')
@@ -66,6 +65,10 @@ def med_details():
 @med_name.route('/edit_mednames/<int:id>', methods=['POST'])
 def edit_mednames(id):
     cur = mysql.connection.cursor()
+
+    if 'user' not in session:
+        flash('Please login first', 'error')
+        return redirect(url_for('auth_bp.login'))
 
     # id = request.args.get('id')
     medicine_name=request.args.get('medicine_name')
@@ -78,9 +81,10 @@ def edit_mednames(id):
         type_id = request.form['type_id']
         strenght = request.form['strenght']
         manufacturer_id = request.form['manufacturer_id']
+        updated_by = session['user']['full_name']
 
-        cur.execute("UPDATE master_medicine SET medicine_name=%s, generic_name=%s, composition=%s, unit_id=%s, type_id=%s, strength=%s, manufacturer_id=%s WHERE id=%s",
-                    (medicine_name, genericname, composition, unit_id, type_id, strenght, manufacturer_id, id))
+        cur.execute("UPDATE master_medicine SET medicine_name=%s, generic_name=%s, composition=%s, unit_id=%s, type_id=%s, strength=%s, manufacturer_id=%s, updated_by=%s WHERE id=%s",
+                    (medicine_name, genericname, composition, unit_id, type_id, strenght, manufacturer_id, updated_by, id))
         
         mysql.connection.commit()
         flash(f'{medicine_name} updates successfuly......','success')
