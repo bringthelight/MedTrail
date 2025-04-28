@@ -25,11 +25,12 @@ def login():
 
         if user and verify_pass(password, user['password']):  
             session['loggedin'] = True
-            session['user'] = user['email']
+            session['user'] = user
             session['user_id'] = user['id']
+            flash('You are logged in successfully...','success')
             return redirect(url_for('auth_bp.dashboard'))
         else:
-            flash('Incorrect email or password, please enter correct details')
+            flash('Incorrect email or password, please enter correct details','warning')
     return render_template('sign-in.html')
 
 @auth_bp.route('/signup', methods=['GET', 'POST'])
@@ -40,8 +41,11 @@ def signup():
         username=request.form['username']
         email = request.form['email']
         password = request.form['password']
-        user_type = request.form['user_type']
-        user_role= request.form['user_role']
+        user_type = request.form.get('user_type')
+        user_role= request.form.get('user_role')
+        print(user_role,'price')
+        print(user_type,'price')
+
 
         password = hash_pass(password)  
 
