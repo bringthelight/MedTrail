@@ -40,8 +40,11 @@ def signup():
         username=request.form['username']
         email = request.form['email']
         password = request.form['password']
-        user_type = request.form['user_type']
-        user_role= request.form['user_role']
+        user_type = request.form.get('user_type')
+        user_role = request.form.get('user_role')
+        
+        print(user_type)
+        print(user_role,"price")
 
         password = hash_pass(password)  
 
