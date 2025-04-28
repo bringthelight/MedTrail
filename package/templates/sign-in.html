@@ -111,12 +111,12 @@
                         <form role="form" method="POST" action="{{ url_for('auth_bp.login') }}">
                           <label>Email</label>
                           <div class="mb-3">
-                            <input type="email" class="form-control" placeholder="Email" aria-label="Email"
+                            <input type="email" class="form-control" placeholder="Email" aria-label="Email" name="email"
                               aria-describedby="email-addon">
                           </div>
                           <label>Password</label>
                           <div class="mb-3">
-                            <input type="password" class="form-control" placeholder="Password" aria-label="Password"
+                            <input type="password" class="form-control" placeholder="Password" aria-label="Password" name="password"
                               aria-describedby="password-addon">
                           </div>
                           <div class="form-check form-switch">
