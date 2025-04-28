@@ -9,15 +9,21 @@ mysql = MySQL()
 def medicine():
     cur = mysql.connection.cursor()
 
+    if 'user' not in session:
+        flash('Please login first', 'error')
+        return redirect(url_for('auth_bp.login')) 
+
     if request.method == 'POST':
         type = request.form['type']
         description = request.form['description']
+        added_by = session['user']['full_name']
+        updated_by = session['user']['full_name']
         
         cur.execute("""
                 INSERT INTO master_medicine_type 
-                (type_name, description)
-                VALUES (%s, %s)
-            """, (type, description))
+                (type_name, description, added_by, updated_by)
+                VALUES (%s, %s, %s, %s)
+            """, (type, description, added_by, updated_by))
             
         mysql.connection.commit()
             
