@@ -25,11 +25,12 @@ def login():
 
         if user and verify_pass(password, user['password']):  
             session['loggedin'] = True
-            session['user'] = user['email']
+            session['user'] = user
             session['user_id'] = user['id']
+            flash('You are logged in successfully...','success')
             return redirect(url_for('auth_bp.dashboard'))
         else:
-            flash('Incorrect email or password, please enter correct details')
+            flash('Incorrect email or password, please enter correct details','warning')
     return render_template('sign-in.html')
 
 @auth_bp.route('/signup', methods=['GET', 'POST'])

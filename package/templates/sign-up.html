@@ -154,6 +154,7 @@
                 </div>
               </div> -->
               <div class="card-body">
+                
                 <form role="form text-left" method="POST" action="{{ url_for('auth_bp.signup') }}">
                   <div class="mb-3">
                     <input type="text" class="form-control" placeholder="Full Name" name="full_name" aria-label="Name" aria-describedby="email-addon">
@@ -171,8 +172,8 @@
                     <input type="password" class="form-control" placeholder="Password" name="password" aria-label="Password" aria-describedby="password-addon">
                   </div>
                   <div class="mb-3">
-                    <label for="usertype">User Type</label>
-                    <select  class="form-control"  name="user_type" aria-label="Name" aria-describedby="email-addon">
+                    <label for="usertype">User Role</label>
+                    <select  class="form-control"  name="user_role" aria-label="Name" aria-describedby="email-addon">
                       <option value="">Select</option>
                       <option value="Pharmacist">Pharmacist</option>
                       <option value="Staff">Staff</option>
@@ -180,8 +181,8 @@
                     </select>
                   </div>
                   <div class="mb-3">
-                    <label for="usertype">User Role</label>
-                    <select  class="form-control"   name="user_role" aria-label="Name" aria-describedby="email-addon">
+                    <label for="usertype">User Type</label>
+                    <select  class="form-control"   name="user_type" aria-label="Name" aria-describedby="email-addon">
                       <option value="">Select</option>
                       <option value="Administration">Administration</option>
                       <option value="Non-Administration">Non-Administration</option>
@@ -277,6 +278,7 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="soft-ui-dashboard-main/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+  
 </body>
 
 </html>
