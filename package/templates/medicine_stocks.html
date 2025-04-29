@@ -79,7 +79,7 @@
                           <div class="mb-3 col-md-6">
                             <label for="type" class="form-label">Pharmacy Name</label>
                             <select class="form-select" name="pharmacy_id" id="type_id">
-                              <option value="">{{item.pharmacy_name}}</option>
+                              <option value="{{item.pharmacy_id}}">{{item.pharmacy_name}}</option>
                               {% for pharm in pharm_name %}
                               {% if pharm.id != item.pharmacy_id %}
                               <option value="{{pharm.id}}">{{ pharm.pharmacy_name }}</option>
@@ -92,7 +92,7 @@
                           <div class="mb-3 col-md-6">
                             <label for="description" class="form-label">Medicine Name</label>
                             <select class="form-select" name="medicine_id" id="type_id">
-                              <option value="">{{item.medicine_name}}</option>
+                              <option value="{{item.medicine_id}}">{{item.medicine_name}}</option>
                               {% for med in med_names %}
                               {%if med.id != item.medicine_id%}
                               <option value="{{med.id}}">{{ med.medicine_name }}</option>
@@ -104,7 +104,7 @@
               
                         <div class="mb-3">
                           <label for="description" class="form-label">Quantity</label>
-                          <input class="form-control" id="input" name="quantity" value="{{item.quantity}}" rows="3">
+                          <input type="number" class="form-control" id="input" name="quantity" value="{{item.quantity}}" rows="3">
                         </div>
               
                         <div class="row">
@@ -197,7 +197,7 @@
 
           <div class="mb-3">
             <label for="description" class="form-label">Quantity</label>
-            <input class="form-control" id="input" name="quantity" placeholder="Enter Quantity" rows="3">
+            <input type="number" class="form-control" id="input" name="quantity" placeholder="Enter Quantity" rows="3">
           </div>
 
           <div class="row">
