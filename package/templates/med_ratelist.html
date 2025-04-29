@@ -1,0 +1,200 @@
+{% extends "dashboard.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+
+<div class="container-sm mt-8 px-8">
+  <div class="row">
+    <div class="col-lg-12 offset-lg-1">
+
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-x-lg"
+            viewBox="0 0 16 16">
+            <path
+              d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+          </svg></button>
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+
+      <div class="table_heading d-flex justify-content-between">
+        <h3 class="text-secondary">Medicine Ratelist</h3>
+        <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#addmednames">
+          Add Medicine Ratelist
+        </button>
+      </div>
+
+      <table id="med" class="table table-sm table-striped table-bordered align-middle text-nowrap small">
+        <thead>
+          <tr>
+            <th>S.no</th>
+            <th>Pharmacy Name</th>
+            <th>Ratelist Name</th>
+            <th>Amount</th>
+            <th>Discount</th>
+            <th>Actions</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{item.pharmacy_name}}</td>
+            <td>{{item.medicine_name}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{item.discount}}</td>
+
+            <td>
+              <a href="{{ url_for('ratelist.editratelist', id=item.id) }}" data-bs-toggle="modal"
+                data-bs-target="#editratelist{{item.id}}">
+                <i class="bi bi-pencil-square mx-3"></i>
+              </a>
+
+              <div class="modal fade" id="editratelist{{item.id}}" tabindex="-1" aria-labelledby="editmedstock{{item.id}}" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered d-flex justify-content-center align-items-center">
+                  <div class="modal-content border-0 shadow w-50">
+                    <div class="modal-header form-header">
+                      <h5 class="modal-title" id="editratelist{{item.id}}">Edit Medicine Stock</h5>
+                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('ratelist.editratelist', id=item.id) }}" method="POST">
+
+              
+                        <div class="row">
+                          <div class="mb-3 col-md-6">
+                            <label for="type" class="form-label">Pharmacy Name</label>
+                            <select class="form-select" name="pharmacy_id" id="type_id">
+                              <option value="{{item.pharmacy_id}}">{{item.pharmacy_name}}</option>
+                              {% for pharm in pharm_name %}
+                              {% if pharm.id != item.pharmacy_id %}
+                              <option value="{{pharm.id}}">{{ pharm.pharmacy_name }}</option>
+                              {% endif %}
+                              {% endfor %}
+                            </select>
+                          </div>
+              
+              
+                          <div class="mb-3 col-md-6">
+                            <label for="description" class="form-label">Ratelist Name</label>
+                            <select class="form-select" name="medicine_id" id="medicine_id">
+                                <option value="{{item.medicine_id}}_{{item.medicine_name}}">{{item.medicine_name}}</option>
+                                {% for med in med_names %}
+                                  {% if med.id != item.medicine_id %}
+                                    <option value="{{ med.id }}_{{ med.medicine_name }}">{{ med.medicine_name }}</option>
+                                  {% endif %}
+                                {% endfor %}
+                              </select>
+                              
+                          </div>
+                        </div>
+              
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="description" class="form-label">Amount</label>
+                                <input class="form-control" type="number" id="input" name="amount" value="{{item.amount}}">
+                              </div>
+                              
+                              <div class="mb-3 col-md-6">
+                                <label for="expiry" class="form-label">Discount</label>
+                                <input class="form-control" type="number" id="discount" name="discount" value="{{item.discount}}">
+                              </div>
+                              
+                        </div>
+                                                    
+                        <div class="text-end">
+                          <button type="submit" class="btn bg-gradient-primary">Submit</button>
+                          <button type="button" class="btn bg-gradient-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <a href="{{ url_for('ratelist.ratedelete', id=item.id) }}"
+                onclick="return confirm('Are you sure you want to delete {{ item.medicine_name }}?');">
+                <i class="bi bi-trash-fill mx-3"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="addmednames" tabindex="-1" aria-labelledby="addmednames" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered d-flex justify-content-center align-items-center">
+    <div class="modal-content border-0 shadow w-50">
+      <div class="modal-header form-header">
+        <h5 class="modal-title" id="addmednames">Add Medicine ratelist</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ url_for('ratelist.addratelist') }}" method="POST">
+
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="type" class="form-label">Pharmacy Name</label>
+              <select class="form-select" name="pharmacy_id" id="type_id">
+                <option value="">select</option>
+                {% for pharm in pharm_name %}
+                <option value="{{pharm.id}}">{{ pharm.pharmacy_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+
+            <div class="mb-3 col-md-6">
+              <label for="description" class="form-label">Medicine Name</label>
+              <select class="form-select" name="medicine_id" id="type_id">
+                <option value="">select</option>
+                {% for med in med_names %}
+                <option value="{{ med.id }}_{{ med.medicine_name }}">{{ med.medicine_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="description" class="form-label">Amount</label>
+              <input class="form-control" type="number" id="input" name="amount" placeholder="Enter Amount" rows="3">
+            </div>
+
+            <div class="mb-3 col-md-6">
+              <label for="expiry" class="form-label">Discount</label>
+              <input class="form-control" type="number" id="input" name="discount" placeholder="Enter Discount">
+            </div>
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn bg-gradient-primary">Submit</button>
+            <button type="button" class="btn bg-gradient-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
