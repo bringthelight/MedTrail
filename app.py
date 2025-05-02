@@ -11,11 +11,7 @@ from login.pharmacy_users import users_bp
 from medicine.medicine_brand import brand_bp
 from medicine.pharmacy_med import pharm_name
 from medicine.medicine_stock import medstock
-<<<<<<< HEAD
-from medicine.pharmacy_service import pharmacy_service
-=======
 from medicine.med_ratelist import ratelist
->>>>>>> ec2e4f5bba6f51ffdaca71d64e996b4a24a23db6
 from flask_mysqldb import MySQL
 import sys
 import os
@@ -46,11 +42,7 @@ app.register_blueprint(pharm_name)
 app.register_blueprint(users_bp)
 app.register_blueprint(brand_bp)
 app.register_blueprint(medstock)
-<<<<<<< HEAD
-app.register_blueprint(pharmacy_service)
-=======
 app.register_blueprint(ratelist)
->>>>>>> ec2e4f5bba6f51ffdaca71d64e996b4a24a23db6
 
 # app.register_blueprint(signup_bp)
 
