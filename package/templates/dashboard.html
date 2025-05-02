@@ -53,24 +53,33 @@
 
 
 <body class="g-sidenav-show  bg-gray-100">
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xl border-0 border-radius-xl my-3 fixed-start"
     id="sidenav-main">
-    <div class="profile mt-7 ms-4">
+    <div class="profile mt-7 ms-4 dropdown">
       {% if session['user'] %}
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSRR0J4F2FJrRXdphyNmjfJ0pZNnJ0tnHFSw&s" class="rounded h-20 w-30" >
-        {{session['user']['username']}}
+      <a class="d-flex align-items-center text-secondary dropdown-toggle" href="#" id="userDropdown"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="https://imgs.search.brave.com/y3hKHaQFUJLeAEC_2JWu_h3nU6o851RqxQsWfAuxNek/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzL2FhL2M4/L2M5L2FhYzhjOWU4/NmUxNWViN2M2Yjg3/MjE4ZmQ2MzdiMWQ2/LmpwZw"
+          alt="avatar" width="40" height="40" class="rounded-circle me-2">
+        <strong>{{ session['user']['full_name'] }}</strong>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="userDropdown">
+        <li><a class="dropdown-item" href="{{ url_for('users.users') }}">User List</a></li>
+      </ul>
       {% endif %}
     </div>
-    <div class="sidenav-header">
+    
+
+    <!-- <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
         aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="{{ url_for('auth_bp.dashboard') }}">
       </a>
-    </div>
+    </div> -->
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
-      <ul class="navbar-nav">
-        <li class="nav-item">
+      <ul class="navbar-nav ">
+        <li style="margin-top: 60px;" class="nav-item ">
           <a class="nav-link" href="{{ url_for('auth_bp.dashboard') }}">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -324,7 +333,7 @@
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
         </li>
-        
+
         {% if session['user_id'] %}
         <li class="nav-item">
           <a class="nav-link  " href="{{ url_for('auth_bp.logout') }}">
@@ -464,307 +473,307 @@
 
   <!-- Content to be shown on the page -->
 
-    {% block content %}
-    <div class="container mt-8">
-      <div class="row">
-        <div class="col-lg-10 offset-lg-2">
-          <div class="row justify-content-center">
-            <div class="col-md-8 text-center">
+  {% block content %}
+  <div class="container mt-8">
+    <div class="row">
+      <div class="col-lg-10 offset-lg-2">
+        <div class="row justify-content-center">
+          <div class="col-md-8 text-center">
 
-              {% with messages = get_flashed_messages(with_categories=true) %}
-              {% if messages %}
-              {% for category, message in messages %}
-              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-x-lg"
-                    viewBox="0 0 16 16">
-                    <path
-                      d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
-                  </svg></button>
-              </div>
-              {% endfor %}
-              {% endif %}
-              {% endwith %}
-
-              <h1 class="display-4">Welcome to HealEasy</h1>
-              <p class="lead">Your Medical Journey Starts Here</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg
+                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-x-lg"
+                  viewBox="0 0 16 16">
+                  <path
+                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                </svg></button>
             </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <h1 class="display-4">Welcome to HealEasy</h1>
+            <p class="lead">Your Medical Journey Starts Here</p>
           </div>
         </div>
       </div>
     </div>
-    {% endblock %}
-
-
-  
-
-
-
-  
+  </div>
+  {% endblock %}
 
 
 
 
 
 
-        <!--   Core JS Files   -->
-<script src="soft-ui-dashboard-main/assets/js/core/popper.min.js"></script>
-<script src="soft-ui-dashboard-main/assets/js/core/bootstrap.min.js"></script>
-<script src="soft-ui-dashboard-main/assets/js/plugins/perfect-scrollbar.min.js"></script>
-<script src="soft-ui-dashboard-main/assets/js/plugins/smooth-scrollbar.min.js"></script>
-<script src="soft-ui-dashboard-main/assets/js/plugins/chartjs.min.js"></script>
-
-<!-- JS for Data Table -->
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap4.js"></script>
-
-<!-- script for data table -->
-<script>
-  new DataTable('#meds' ,{
-    scrollX: true,
-    scrollY: 500
-});
-</script>
-<script>
-  new DataTable('#medicine_inventory',{
-    scrollX: true,
-    scrollY: 500
-});
-</script>
 
 
-<script>
-  new DataTable('#brands')
-</script>
-<script>
-  new DataTable('#med',{
-    scrollX: true,
-    scrollY: 500
-});
-</script>
-
-<script>
-  var ctx = document.getElementById("chart-bars").getContext("2d");
-
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [{
-        label: "Sales",
-        tension: 0.4,
-        borderWidth: 0,
-        borderRadius: 4,
-        borderSkipped: false,
-        backgroundColor: "#fff",
-        data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
-        maxBarThickness: 6
-      },],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false,
-        }
-      },
-      interaction: {
-        intersect: false,
-        mode: 'index',
-      },
-      scales: {
-        y: {
-          grid: {
-            drawBorder: false,
-            display: false,
-            drawOnChartArea: false,
-            drawTicks: false,
-          },
-          ticks: {
-            suggestedMin: 0,
-            suggestedMax: 500,
-            beginAtZero: true,
-            padding: 15,
-            font: {
-              size: 14,
-              family: "Inter",
-              style: 'normal',
-              lineHeight: 2
-            },
-            color: "#fff"
-          },
-        },
-        x: {
-          grid: {
-            drawBorder: false,
-            display: false,
-            drawOnChartArea: false,
-            drawTicks: false
-          },
-          ticks: {
-            display: false
-          },
-        },
-      },
-    },
-  });
 
 
-  var ctx2 = document.getElementById("chart-line").getContext("2d");
 
-  var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
 
-  gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
-  gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-  gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
 
-  var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+  <!--   Core JS Files   -->
+  <script src="soft-ui-dashboard-main/assets/js/core/popper.min.js"></script>
+  <script src="soft-ui-dashboard-main/assets/js/core/bootstrap.min.js"></script>
+  <script src="soft-ui-dashboard-main/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="soft-ui-dashboard-main/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="soft-ui-dashboard-main/assets/js/plugins/chartjs.min.js"></script>
 
-  gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
-  gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-  gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+  <!-- JS for Data Table -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+  <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap4.js"></script>
 
-  new Chart(ctx2, {
-    type: "line",
-    data: {
-      labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [{
-        label: "Mobile apps",
-        tension: 0.4,
-        borderWidth: 0,
-        pointRadius: 0,
-        borderColor: "#cb0c9f",
-        borderWidth: 3,
-        backgroundColor: gradientStroke1,
-        fill: true,
-        data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-        maxBarThickness: 6
-
-      },
-      {
-        label: "Websites",
-        tension: 0.4,
-        borderWidth: 0,
-        pointRadius: 0,
-        borderColor: "#3A416F",
-        borderWidth: 3,
-        backgroundColor: gradientStroke2,
-        fill: true,
-        data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
-        maxBarThickness: 6
-      },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false,
-        }
-      },
-      interaction: {
-        intersect: false,
-        mode: 'index',
-      },
-      scales: {
-        y: {
-          grid: {
-            drawBorder: false,
-            display: true,
-            drawOnChartArea: true,
-            drawTicks: false,
-            borderDash: [5, 5]
-          },
-          ticks: {
-            display: true,
-            padding: 10,
-            color: '#b2b9bf',
-            font: {
-              size: 11,
-              family: "Inter",
-              style: 'normal',
-              lineHeight: 2
-            },
-          }
-        },
-        x: {
-          grid: {
-            drawBorder: false,
-            display: false,
-            drawOnChartArea: false,
-            drawTicks: false,
-            borderDash: [5, 5]
-          },
-          ticks: {
-            display: true,
-            color: '#b2b9bf',
-            padding: 20,
-            font: {
-              size: 11,
-              family: "Inter",
-              style: 'normal',
-              lineHeight: 2
-            },
-          }
-        },
-      },
-    },
-  });
-</script>
-<script>
-  var win = navigator.platform.indexOf('Win') > -1;
-  if (win && document.querySelector('#sidenav-scrollbar')) {
-    var options = {
-      damping: '0.5'
-    }
-    Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-  }
-</script>
-<!-- Github buttons -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-<script src="soft-ui-dashboard-main/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
-<script>
-  // Auto-hide alerts after 2 seconds
-  document.addEventListener('DOMContentLoaded', function() {
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(function(alert) {
-      setTimeout(function() {
-        // Create fade out effect
-        alert.classList.remove('show');
-        alert.classList.add('fade');
-        
-        // Remove alert after fade animation
-        setTimeout(function() {
-          alert.remove();
-        }, 150);
-      }, 2000); // 2000ms = 2 seconds
+  <!-- script for data table -->
+  <script>
+    new DataTable('#meds', {
+      scrollX: true,
+      scrollY: true
     });
-  });
-</script>
+  </script>
+  <script>
+    new DataTable('#medicine_inventory', {
+      scrollX: true,
+      scrollY: true
+    });
+  </script>
 
-<!-- Phone number validations -->
-<script>
-  const phoneInput = document.getElementById('phone');
 
-  phoneInput.addEventListener('input', function () {
-    // Remove all non-digit characters
-    let digits = this.value.replace(/\D/g, '');
+  <script>
+    new DataTable('#brands')
+  </script>
+  <script>
+    new DataTable('#med', {
+      scrollX: true,
+      scrollY: true
+    });
+  </script>
 
-    // Limit to first 10 digits
-    if (digits.length > 10) {
-      digits = digits.slice(0, 10);
+  <script>
+    var ctx = document.getElementById("chart-bars").getContext("2d");
+
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        datasets: [{
+          label: "Sales",
+          tension: 0.4,
+          borderWidth: 0,
+          borderRadius: 4,
+          borderSkipped: false,
+          backgroundColor: "#fff",
+          data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+          maxBarThickness: 6
+        },],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false,
+            },
+            ticks: {
+              suggestedMin: 0,
+              suggestedMax: 500,
+              beginAtZero: true,
+              padding: 15,
+              font: {
+                size: 14,
+                family: "Inter",
+                style: 'normal',
+                lineHeight: 2
+              },
+              color: "#fff"
+            },
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false
+            },
+            ticks: {
+              display: false
+            },
+          },
+        },
+      },
+    });
+
+
+    var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+    var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+    var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+
+    new Chart(ctx2, {
+      type: "line",
+      data: {
+        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        datasets: [{
+          label: "Mobile apps",
+          tension: 0.4,
+          borderWidth: 0,
+          pointRadius: 0,
+          borderColor: "#cb0c9f",
+          borderWidth: 3,
+          backgroundColor: gradientStroke1,
+          fill: true,
+          data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+          maxBarThickness: 6
+
+        },
+        {
+          label: "Websites",
+          tension: 0.4,
+          borderWidth: 0,
+          pointRadius: 0,
+          borderColor: "#3A416F",
+          borderWidth: 3,
+          backgroundColor: gradientStroke2,
+          fill: true,
+          data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+          maxBarThickness: 6
+        },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              padding: 10,
+              color: '#b2b9bf',
+              font: {
+                size: 11,
+                family: "Inter",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              color: '#b2b9bf',
+              padding: 20,
+              font: {
+                size: 11,
+                family: "Inter",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+        },
+      },
+    });
+  </script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
+  </script>
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="soft-ui-dashboard-main/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+  <script>
+    // Auto-hide alerts after 2 seconds
+    document.addEventListener('DOMContentLoaded', function () {
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(function (alert) {
+        setTimeout(function () {
+          // Create fade out effect
+          alert.classList.remove('show');
+          alert.classList.add('fade');
 
-    this.value = digits;
-  });
-</script>
+          // Remove alert after fade animation
+          setTimeout(function () {
+            alert.remove();
+          }, 150);
+        }, 2000); // 2000ms = 2 seconds
+      });
+    });
+  </script>
+
+  <!-- Phone number validations -->
+  <script>
+    const phoneInput = document.getElementById('phone');
+
+    phoneInput.addEventListener('input', function () {
+      // Remove all non-digit characters
+      let digits = this.value.replace(/\D/g, '');
+
+      // Limit to first 10 digits
+      if (digits.length > 10) {
+        digits = digits.slice(0, 10);
+      }
+
+      this.value = digits;
+    });
+  </script>
 </body>
 
 </html>
