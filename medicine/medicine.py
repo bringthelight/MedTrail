@@ -21,7 +21,7 @@ def medicine():
         cur.execute("""
                 INSERT INTO master_medicine_type 
                 (type_name, description, added_by)
-                VALUES (%s, %s, %s, %s)
+                VALUES (%s, %s, %s)
             """, (type, description, added_by))
             
         mysql.connection.commit()
