@@ -27,6 +27,11 @@ def login():
             session['loggedin'] = True
             session['user'] = user
             session['user_id'] = user['id']
+
+            cur.execute("SELECT * FROM pharmacy_service WHERE id = %s", (user['pharmacy_service_id'],))
+            pharmacy = cur.fetchone()
+            session['pharmacy'] = pharmacy
+
             flash('You are logged in successfully...','success')
             return redirect(url_for('auth_bp.dashboard'))
         else:

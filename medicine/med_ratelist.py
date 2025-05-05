@@ -5,6 +5,7 @@ from datetime import datetime
 ratelist= Blueprint('ratelist', __name__)
 mysql = MySQL()
 
+
 @ratelist.route('/med_ratelist', methods=['GET', 'POST'])
 def medratelist():
     cur = mysql.connection.cursor()

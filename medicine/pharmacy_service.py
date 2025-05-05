@@ -10,7 +10,7 @@ pharmacy_service = Blueprint('pharmacy_service',__name__)
 def service():
     cur = mysql.connection.cursor()
 
-    cur.execute("SELECT * FROM pharmacy_service")
+    cur.execute("SELECT * FROM pharmacy_service where ")
 
     pharmacies = cur.fetchall()
 
