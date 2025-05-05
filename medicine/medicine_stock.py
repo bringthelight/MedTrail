@@ -16,7 +16,6 @@ def stock():
             JOIN pharmacy_service ON pharmacy_stock.pharmacy_id = pharmacy_service.id"""
             )
         items = cur.fetchall()
-        print(items)
 
         cur.execute("SELECT id, medicine_name FROM master_medicine")
         med_names = cur.fetchall()
