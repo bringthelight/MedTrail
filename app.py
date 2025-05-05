@@ -12,6 +12,7 @@ from medicine.medicine_brand import brand_bp
 from medicine.pharmacy_med import pharm_name
 from medicine.medicine_stock import medstock
 from medicine.med_ratelist import ratelist
+from medicine.pharmacy_details import pharm_details
 from flask_mysqldb import MySQL
 import sys
 import os
@@ -43,6 +44,7 @@ app.register_blueprint(users_bp)
 app.register_blueprint(brand_bp)
 app.register_blueprint(medstock)
 app.register_blueprint(ratelist)
+app.register_blueprint(pharm_details)
 
 # app.register_blueprint(signup_bp)
 

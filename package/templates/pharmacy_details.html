@@ -1,0 +1,83 @@
+{% extends "dashboard.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+
+<div class="container-sm mt-8 px-8">
+  <div class="row">
+    <div class="col-lg-12 offset-lg-1">
+
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-x-lg"
+            viewBox="0 0 16 16">
+            <path
+              d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+          </svg></button>
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+
+      <div class="table_heading d-flex justify-content-between">
+        <h3 class="text-secondary">Pharmacy Details</h3>
+        <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#addmednames">
+          Edit Details
+        </button>
+      </div>
+
+      <table id="med" class="table table-sm table-striped table-bordered align-middle text-nowrap small">
+        <thead>
+          <tr>
+            <th>S.no</th>
+            <th>Pharmacy Name</th>
+            <th>Pharmacy Address</th>
+            <th>Pharmacy City</th>
+            <th>Pharmacy State</th>
+            <th>Pharmacy Pincode</th>
+            <th>Pharmacy Primary Name</th>
+            <th>Pharmacy Primary Number</th>
+            <th>Pharmacy Secondary Name</th>
+            <th>Pharmacy Secondary Number</th>
+            <th>Pharmacy User Count</th>
+            <th>Pharmacy Email</th>
+            <th>Pharmacy license Number</th>
+            <th>Invoice range</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in data %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{item.pharmacy_name}}</td>
+            <td>{{item.pharmacy_address}}</td>
+            <td>{{item.pharmacy_city}}</td>
+            <td>{{item.pharmacy_state}}</td>
+            <td>{{item.pharmacy_pincode}}</td>
+            <td>{{item.pharmacy_primary_name}}</td>
+            <td>{{item.pharmacy_primary_number}}</td>
+            <td>{{item.pharmacy_secondary_name}}</td>
+            <td>{{item.pharmacy_secondary_number}}</td>
+            <td>{{item.pharmacy_user_count}}</td>
+            <td>{{item.pharmacy_email}}</td>
+            <td>{{item.pharmacy_license_number}}</td>
+            <td>{{item.invoice_range}}</td>
+            
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
