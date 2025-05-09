@@ -118,6 +118,24 @@
                                   <option value="pharmacist" {% if item.role == 'pharmacist' %}selected{% endif %}>Non-Administration</option>
                                 </select>
                               </div>
+                          <div class="row">
+                            
+                            <div class="mb-3 col-md-6">
+                              <label for="role" class="form-label">User Role</label>
+                              <select class="form-select" id="role" name="user_role" required>
+                                <option value="admin" {% if item.role == 'admin' %}selected{% endif %}>Admin</option>
+                                <option value="pharmacist" {% if item.role == 'pharmacist' %}selected{% endif %}>Pharmacist</option>
+                                <option value="staff" {% if item.role == 'staff' %}selected{% endif %}>Staff</option>
+                              </select>
+                            </div>
+                          </div>
+
+                            <div class="mb-3 col-md-6">
+                              <label for="role" class="form-label">Type Role</label>
+                              <select class="form-select" id="role" name="user_type" required>
+                                <option value="admin" {% if item.role == 'admin' %}selected{% endif %}>Administration</option>
+                                <option value="pharmacist" {% if item.role == 'pharmacist' %}selected{% endif %}>Non-Administration</option>
+                              </select>
                             </div>
                               
                           
