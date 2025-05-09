@@ -101,38 +101,27 @@
                       </div>
                       <div class="modal-body">
                         <form action="{{ url_for('users_bp.edit_user', id=item.id) }}" method="POST">
-                          <div class="row">
-                            <div class="mb-3 col-md-6">
-                              <label for="pharmacy_id" class="form-label">Pharmacy Name</label>
-                              <select class="form-select" id="pharmacy_id" name="pharmacy_id" required>
-                                {% for pharmacy in pharmacies %}
-                                <option value="{{ pharmacy.id }}" {% if pharmacy.id == item.pharmacy_id %}selected{% endif %}>
-                                  {{ pharmacy.pharmacy_name }}
-                                </option>
-                                {% endfor %}
-                              </select>
+                            <div class="row">
+                              <div class="mb-3 col-md-6">
+                                <label for="role" class="form-label">User Role</label>
+                                <select class="form-select" id="role" name="user_role" required>
+                                  <option value="admin" {% if item.role == 'admin' %}selected{% endif %}>Admin</option>
+                                  <option value="pharmacist" {% if item.role == 'pharmacist' %}selected{% endif %}>Pharmacist</option>
+                                  <option value="staff" {% if item.role == 'staff' %}selected{% endif %}>Staff</option>
+                                </select>
                             </div>
-                            
-                            <div class="mb-3 col-md-6">
-                              <label for="role" class="form-label">User Role</label>
-                              <select class="form-select" id="role" name="user_role" required>
-                                <option value="admin" {% if item.role == 'admin' %}selected{% endif %}>Admin</option>
-                                <option value="pharmacist" {% if item.role == 'pharmacist' %}selected{% endif %}>Pharmacist</option>
-                                <option value="staff" {% if item.role == 'staff' %}selected{% endif %}>Staff</option>
-                              </select>
+  
+                              <div class="mb-3 col-md-6">
+                                <label for="role" class="form-label">Type Role</label>
+                                <select class="form-select" id="role" name="user_type" required>
+                                  <option value="admin" {% if item.role == 'admin' %}selected{% endif %}>Administration</option>
+                                  <option value="pharmacist" {% if item.role == 'pharmacist' %}selected{% endif %}>Non-Administration</option>
+                                </select>
+                              </div>
                             </div>
-                          </div>
-
-                            <div class="mb-3 col-md-6">
-                              <label for="role" class="form-label">Type Role</label>
-                              <select class="form-select" id="role" name="user_type" required>
-                                <option value="admin" {% if item.role == 'admin' %}selected{% endif %}>Administration</option>
-                                <option value="pharmacist" {% if item.role == 'pharmacist' %}selected{% endif %}>Non-Administration</option>
-                              </select>
-                            </div>
+                              
                           
-                          <div class="row">
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3">
                               <label for="first_name" class="form-label">Name</label>
                               <input type="text" class="form-control" id="first_name" name="full_name" value="{{ item.full_name }}"
                                 required>
@@ -190,16 +179,7 @@
               <div class="modal-body">
                 <form action="{{ url_for('users_bp.addusers') }}" method="POST">
                   
-                    <div class="mb-3">
-                      <label for="pharmacy_id" class="form-label">Pharmacy Name</label>
-                      <select class="form-select" id="pharmacy_id" name="pharmacy_id" required>
-                        <option value="">Select</option>
-                        {% for pharmacy in pharm_name %}
-                        <option value="{{ pharmacy.id }}">{{ pharmacy.pharmacy_name }}
-                        </option>
-                        {% endfor %}
-                      </select>
-                    </div>
+                    
                     <div class="row">
                     <div class="mb-3 col-md-6">
                       <label for="role" class="form-label">User Role</label>
@@ -232,8 +212,6 @@
                       required>
                   </div>
                   
-                  <!-- Password field removed as requested -->
-                  <!-- Default password "healtrail@123" will be set in the backend -->
                   
                   <div class="row">
                     <div class="mb-3 col-md-6">

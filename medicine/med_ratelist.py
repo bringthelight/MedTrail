@@ -5,29 +5,35 @@ from datetime import datetime
 ratelist= Blueprint('ratelist', __name__)
 mysql = MySQL()
 
+
 @ratelist.route('/med_ratelist', methods=['GET', 'POST'])
 def medratelist():
+
+    if 'user' not in session:
+        flash('Please login first', 'error')
+        return redirect(url_for('auth_bp.login'))
+    
+    pharmacy_id = session['user'].get('pharmacy_service_id')
     cur = mysql.connection.cursor()
     if request.method=='GET':
         cur.execute(
-            """SELECT pharmacy_ratelist.*, pharmacy_service.pharmacy_name, pharmacy_medicine.medicine_name
+            """SELECT pharmacy_ratelist.*, pharmacy_medicine.medicine_name
             FROM pharmacy_ratelist 
             LEFT JOIN pharmacy_medicine ON pharmacy_ratelist.pharmacy_medicine_id = pharmacy_medicine.id
-            LEFT JOIN pharmacy_service ON pharmacy_ratelist.pharmacy_id = pharmacy_service.id"""
-            )
+            WHERE pharmacy_ratelist.pharmacy_id=%s
+            """
+            ,(pharmacy_id,))
         items = cur.fetchall()
         # print(items)
         
-        cur.execute("SELECT id, medicine_name FROM pharmacy_medicine")
-        med_names = cur.fetchall()
+        # cur.execute("SELECT id, medicine_name FROM pharmacy_medicine")
+        # med_names = cur.fetchall()
         
-        cur.execute("SELECT id, pharmacy_name FROM pharmacy_service")
-        pharm_name = cur.fetchall()
+        # cur.execute("SELECT id, pharmacy_name FROM pharmacy_service")
+        # pharm_name = cur.fetchall()
 
         return render_template('med_ratelist.html', 
-                             items=items,
-                             med_names=med_names,
-                             pharm_name=pharm_name)
+                             items=items)
 
     return render_template('med_ratelist.html', items = items)
 

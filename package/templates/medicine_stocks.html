@@ -37,28 +37,35 @@
         <thead>
           <tr>
             <th>S.no</th>
-            <th>Pharmacy Name</th>
             <th>Medicine Name</th>
             <th>Quantity</th>
             <th>Batch Number</th>
             <th>Expiry Date</th>
             <th>Purchase Price</th>
             <th>Selling Price</th>
+            <th>Stock Status</th>
             <th>Actions</th>
-
           </tr>
         </thead>
         <tbody>
           {% for item in items %}
           <tr>
             <td>{{ loop.index }}</td>
-            <td>{{item.pharmacy_name}}</td>
             <td>{{item.medicine_name}}</td>
             <td>{{item.quantity}}</td>
             <td>{{item.batch_number}}</td>
             <td>{{item.expiry_date}}</td>
             <td>{{item.purchase_price}}</td>
             <td>{{item.selling_price}}</td>
+            <td class="text-center">
+              {% if item.quantity < 5 %}
+              <span class="badge rounded-pill bg-danger" title="Low Stock">Low</span>
+              {% elif item.quantity == 5 %}
+              <span class="badge rounded-pill bg-warning" title="Medium Stock">Medium</span>
+              {% else %}
+              <span class="badge rounded-pill bg-success" title="Good Stock">Good</span>
+              {% endif %}
+            </td>
             <td>
               <a href="{{ url_for('medstock.editmedstock', id=item.id) }}" data-bs-toggle="modal"
                 data-bs-target="#editmedstock{{item.id}}">
@@ -75,21 +82,9 @@
                     <div class="modal-body">
                       <form action="{{ url_for('medstock.editmedstock', id=item.id) }}" method="POST">
               
-                        <div class="row">
-                          <div class="mb-3 col-md-6">
-                            <label for="type" class="form-label">Pharmacy Name</label>
-                            <select class="form-select" name="pharmacy_id" id="type_id">
-                              <option value="{{item.pharmacy_id}}">{{item.pharmacy_name}}</option>
-                              {% for pharm in pharm_name %}
-                              {% if pharm.id != item.pharmacy_id %}
-                              <option value="{{pharm.id}}">{{ pharm.pharmacy_name }}</option>
-                              {% endif %}
-                              {% endfor %}
-                            </select>
-                          </div>
+                        <input type="hidden" name="pharmacy_id" value="{{ session['pharmacy']['id'] }}">
               
-              
-                          <div class="mb-3 col-md-6">
+                          <div class="medname">
                             <label for="description" class="form-label">Medicine Name</label>
                             <select class="form-select" name="medicine_id" id="type_id">
                               <option value="{{item.medicine_id}}">{{item.medicine_name}}</option>
@@ -102,12 +97,12 @@
                           </div>
                         </div>
               
-                        <div class="mb-3">
+                        <div class="mb-3 px-3">
                           <label for="description" class="form-label">Quantity</label>
                           <input type="number" class="form-control" id="input" name="quantity" value="{{item.quantity}}" rows="3">
                         </div>
               
-                        <div class="row">
+                        <div class="row px-3">
                           <div class="mb-3 col-md-6">
                             <label for="description" class="form-label">Batch Number</label>
                             <input class="form-control" id="input" name="batch_number" value="{{item.batch_number}}" rows="3">
@@ -121,13 +116,13 @@
                         </div>
               
               
-                        <div class="mb-3">
+                        <div class="mb-3 px-3">
                           <label for="description" class="form-label">Puchase Price (in ₹)</label>
                           <input class="form-control" id="input" name="purchase_price" value="{{item.purchase_price}}"
                             rows="3"></input>
                         </div>
               
-                        <div class="mb-3">
+                        <div class="mb-3 px-3">
                           <label for="description" class="form-label">Selling Price (in ₹)</label>
                           <input class="form-control" id="input" name="selling_price" value="{{item.selling_price}}"
                             rows="3"></input>
@@ -172,19 +167,9 @@
       <div class="modal-body">
         <form action="{{ url_for('medstock.addmedstock') }}" method="POST">
 
-          <div class="row">
-            <div class="mb-3 col-md-6">
-              <label for="type" class="form-label">Pharmacy Name</label>
-              <select class="form-select" name="pharmacy_id" id="type_id">
-                <option value="">select</option>
-                {% for pharm in pharm_name %}
-                <option value="{{pharm.id}}">{{ pharm.pharmacy_name }}</option>
-                {% endfor %}
-              </select>
-            </div>
+          <input type="hidden" name="pharmacy_id" value="{{ session['pharmacy']['id'] }}">
 
-
-            <div class="mb-3 col-md-6">
+            <div class="medname">
               <label for="description" class="form-label">Medicine Name</label>
               <select class="form-select" name="medicine_id" id="type_id">
                 <option value="">select</option>
@@ -195,12 +180,12 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3 px-3">
             <label for="description" class="form-label">Quantity</label>
             <input type="number" class="form-control" id="input" name="quantity" placeholder="Enter Quantity" rows="3">
           </div>
 
-          <div class="row">
+          <div class="row px-3">
             <div class="mb-3 col-md-6">
               <label for="description" class="form-label">Batch Number</label>
               <input class="form-control" id="input" name="batch_number" placeholder="Enter Batch Number" rows="3">
@@ -214,13 +199,13 @@
           </div>
 
 
-          <div class="mb-3">
+          <div class="mb-3 px-3">
             <label for="description" class="form-label">Puchase Price (in ₹)</label>
             <input class="form-control" id="input" name="purchase_price" placeholder="Enter Purchase Price"
               rows="3"></input>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3 px-3">
             <label for="description" class="form-label">Selling Price (in ₹)</label>
             <input class="form-control" id="input" name="selling_price" placeholder="Enter Selling Price"
               rows="3"></input>

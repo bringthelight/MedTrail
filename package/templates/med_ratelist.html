@@ -37,7 +37,6 @@
         <thead>
           <tr>
             <th>S.no</th>
-            <th>Pharmacy Name</th>
             <th>Ratelist Name</th>
             <th>Amount</th>
             <th>Discount</th>
@@ -49,7 +48,6 @@
           {% for item in items %}
           <tr>
             <td>{{ loop.index }}</td>
-            <td>{{item.pharmacy_name}}</td>
             <td>{{item.medicine_name}}</td>
             <td>{{item.amount}}</td>
             <td>{{item.discount}}</td>

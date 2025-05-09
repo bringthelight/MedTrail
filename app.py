@@ -12,6 +12,8 @@ from medicine.medicine_brand import brand_bp
 from medicine.pharmacy_med import pharm_name
 from medicine.medicine_stock import medstock
 from medicine.med_ratelist import ratelist
+from Billing.billing_route import billing
+from medicine.pharmacy_details import pharm_details
 from flask_mysqldb import MySQL
 import sys
 import os
@@ -28,7 +30,7 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_DB'] = 'healtrail_pharmacy'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SECRET_KEY'] = 'sdfsdfsdgsdewt4ww345gert34'
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(data_fetch)
@@ -43,9 +45,11 @@ app.register_blueprint(users_bp)
 app.register_blueprint(brand_bp)
 app.register_blueprint(medstock)
 app.register_blueprint(ratelist)
+app.register_blueprint(billing)
+app.register_blueprint(pharm_details)
 
-# app.register_blueprint(signup_bp)
+
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',port=8000,debug=True)
