@@ -14,7 +14,11 @@
                     <div class="medicine-row row mb-3">
                         <div class="col-md-3">
                             <label class="form-label">Medicine Name</label>
-                            <select class="form-select medicine-select" name="medicine[]" required>
+                            <input type="text" class="form-control medicine-search" placeholder="Search medicine..." id="medicineSearchInput">
+                                <div class="dropdown-list position-absolute w-100 d-none" id="medicineDropdown" style="max-height: 300px; overflow-y: auto; z-index: 1000; background: white; border: 1px solid #ced4da; border-radius: 0.25rem;">
+                                    <!-- Options will be populated here dynamically -->
+                                </div>
+                            <select class="form-select medicine-select d-none" name="medicine[]" required id="actualMedicineSelect">
                                 <option value="">Select Medicine</option>
                                 {% for med in med_names %}
                                 <option value="{{ med.id }}" 
@@ -24,6 +28,7 @@
                                 </option>
                                 {% endfor %}
                             </select>
+                            <input type="hidden" name="medicine[]" id="selectedMedicineId" required>
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Quantity</label>
@@ -140,10 +145,137 @@
     }
     
     // Initial setup
+    initializeSearchableDropdowns();
     setupEventListeners();
     calculateAllRows();
     updateRemoveButtons();
 });
+
+    
+    // Initialize searchable dropdowns for all medicine rows
+    function initializeSearchableDropdowns() {
+        document.querySelectorAll('.medicine-row').forEach(row => {
+            setupSearchableDropdown(row);
+        });
+    }
+    
+    // Setup searchable dropdown for a specific row
+    function setupSearchableDropdown(row) {
+        const searchInput = row.querySelector('.medicine-search');
+        const dropdown = row.querySelector('.dropdown-list');
+        const actualSelect = row.querySelector('.medicine-select');
+        const hiddenInput = row.querySelector('input[type="hidden"]');
+        
+        if (!searchInput || !dropdown || !actualSelect || !hiddenInput) return;
+        
+        // Create medicine options array from select options
+        const medicines = [];
+        for (let i = 1; i < actualSelect.options.length; i++) { // Start from 1 to skip the "Select Medicine" option
+            const option = actualSelect.options[i];
+            medicines.push({
+                id: option.value,
+                name: option.textContent.trim(),
+                price: option.dataset.price,
+                discount: option.dataset.discount
+            });
+        }
+        
+        // Function to populate dropdown with filtered items
+        function populateDropdown(filter = '') {
+            dropdown.innerHTML = '';
+            const filterLower = filter.toLowerCase();
+            
+            // Always add a "Select Medicine" option
+            const defaultOption = document.createElement('div');
+            defaultOption.className = 'dropdown-item p-2';
+            defaultOption.textContent = 'Select Medicine';
+            defaultOption.dataset.id = '';
+            defaultOption.style.cursor = 'pointer';
+            dropdown.appendChild(defaultOption);
+            
+            // Add matching medicines
+            const matchingMedicines = medicines.filter(med => 
+                med.name.toLowerCase().includes(filterLower)
+            );
+            
+            matchingMedicines.forEach(medicine => {
+                const item = document.createElement('div');
+                item.className = 'dropdown-item p-2';
+                item.textContent = medicine.name;
+                item.dataset.id = medicine.id;
+                item.dataset.price = medicine.price;
+                item.dataset.discount = medicine.discount;
+                item.style.cursor = 'pointer';
+                dropdown.appendChild(item);
+            });
+            
+            // Show no results message if no matches found
+            if (matchingMedicines.length === 0 && filter !== '') {
+                const noResults = document.createElement('div');
+                noResults.className = 'p-2 text-muted';
+                noResults.textContent = 'No medicines found';
+                dropdown.appendChild(noResults);
+            }
+        }
+        
+        // Initialize dropdown with all options
+        populateDropdown();
+        
+        // Show dropdown when input is focused
+        searchInput.addEventListener('focus', function() {
+            dropdown.classList.remove('d-none');
+        });
+        
+        // Filter as user types
+        searchInput.addEventListener('input', function() {
+            populateDropdown(this.value);
+            dropdown.classList.remove('d-none');
+        });
+        
+        // Handle item selection
+        dropdown.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-item')) {
+                const id = event.target.dataset.id;
+                const name = event.target.textContent;
+                const price = event.target.dataset.price;
+                const discount = event.target.dataset.discount;
+                
+                // Update hidden input with selected value
+                hiddenInput.value = id;
+                
+                // Update search input with selected name
+                searchInput.value = name;
+                
+                // Set validation state
+                if (id) {
+                    // searchInput.classList.add('is-valid');
+                    // searchInput.classList.remove('is-invalid');
+                    
+                    // Update actual select to match (for calculation compatibility)
+                    actualSelect.value = id;
+                    
+                    // Recalculate the row
+                    calculateRow(row);
+                } else {
+                    searchInput.value = '';
+                    searchInput.classList.remove('is-valid');
+                    actualSelect.selectedIndex = 0;
+                    calculateRow(row);
+                }
+                
+                // Hide dropdown
+                dropdown.classList.add('d-none');
+            }
+        });
+        
+        // Handle clicking outside to close dropdown
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown-container') || event.target.closest('.dropdown-container') !== searchInput.closest('.dropdown-container')) {
+                dropdown.classList.add('d-none');
+            }
+        });
+    }
+
 
 // Function to add a new row
 function addNewRow() {
