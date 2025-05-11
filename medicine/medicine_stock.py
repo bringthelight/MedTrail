@@ -56,29 +56,39 @@ def addmedstock():
         flash('Stock added successfully....','success')
         return redirect(url_for('medstock.stock'))
     
-@medstock.route('/editmedstock', methods=['POST'])
-def editmedstock():
-    cur = mysql.connection.cursor()
-    id = request.args.get('id')
-    if request.method=='POST':
-        pharmacy_id = request.form['pharmacy_id']
-        medicine_id  = request.form['medicine_id']
-        quantity = request.form['quantity']
-        batch_number = request.form['batch_number']
-        expiry_date = request.form['expiry_date']
-        purchase_price = request.form['purchase_price']
-        selling_price = request.form['selling_price']
+@medstock.route('/editmedstock/<int:id>', methods=['POST'])
+def editmedstock(id):
+        cur = mysql.connection.cursor()
+        pharmacy_id = session['user'].get('pharmacy_service_id')
         
-        cur.execute("""UPDATE pharmacy_stock 
-                    SET pharmacy_id=%s, pharmacy_medicine_id=%s, quantity=%s, batch_number=%s, 
+        # First get the existing pharmacy_medicine_id
+        cur.execute("""SELECT pharmacy_medicine_id 
+                    FROM pharmacy_stock 
+                    WHERE id=%s AND pharmacy_id=%s""", 
+                    (id, pharmacy_id))
+        existing_stock = cur.fetchone()
+        
+        if not existing_stock:
+            flash('Stock record not found', 'error')
+            return redirect(url_for('medstock.stock'))
+            
+        if request.method=='POST':
+            quantity = request.form['quantity']
+            batch_number = request.form['batch_number']
+            expiry_date = request.form['expiry_date']
+            purchase_price = request.form['purchase_price']
+            selling_price = request.form['selling_price']
+            
+            cur.execute("""UPDATE pharmacy_stock 
+                    SET quantity=%s, batch_number=%s, 
                     expiry_date=%s, purchase_price=%s, selling_price=%s 
-                    WHERE id=%s""",
-                    (pharmacy_id, medicine_id, quantity, batch_number, expiry_date, 
-                     purchase_price, selling_price, id))
-                
-        mysql.connection.commit()
-        flash('Stock updated successfully....','success')
-        return redirect(url_for('medstock.stock'))
+                    WHERE id=%s AND pharmacy_id=%s""",
+                    (quantity, batch_number, expiry_date, 
+                        purchase_price, selling_price, id, pharmacy_id))
+                    
+            mysql.connection.commit()
+            flash('Stock updated successfully....','success')
+            return redirect(url_for('medstock.stock'))
 
 @medstock.route('/stockdelete/<int:id>', methods=['GET'])
 def stockdelete(id):
