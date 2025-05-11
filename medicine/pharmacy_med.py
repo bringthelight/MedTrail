@@ -114,12 +114,9 @@ def delete_mednames(id, medicine_name):
 
 @pharm_name.route('/select-master-medicines', methods=['GET'])
 def select_master_medicines():
-    """
-    Display master medicines for selection with all fields but show only medicine_name
-    """
     cur = mysql.connection.cursor()
     
-    # Get all fields but we'll only display medicine_name in template
+    # Get all master medicines
     cur.execute("""
         SELECT m.*, t.type_name, u.unit_short_name, man.manufacturer_name
         FROM master_medicine m
@@ -130,8 +127,16 @@ def select_master_medicines():
     """)
     master_medicines = cur.fetchall()
     
+    # Get list of already selected medicines (by medicine_name)
+    cur.execute("""
+        SELECT medicine_name 
+        FROM pharmacy_medicine
+    """)
+    selected_medicines = {item['medicine_name']: True for item in cur.fetchall()}
+    
     return render_template('master_medicine_select.html', 
-                          master_medicines=master_medicines)
+                          master_medicines=master_medicines,
+                          selected_medicines=selected_medicines)
 
 @pharm_name.route('/add-from-master', methods=['POST'])
 def add_from_master():
@@ -142,7 +147,7 @@ def add_from_master():
         selected_medicines = request.form.getlist('selected_medicines')
         
         if not selected_medicines:
-            flash('Please select at least one medicine',    'warning')
+            flash('Please select at least one medicine', 'warning')
             return redirect(url_for('pharm_name.select_master_medicines'))
         
         cur = mysql.connection.cursor()
@@ -152,6 +157,7 @@ def add_from_master():
         current_time = datetime.now()
         
         for med_id in selected_medicines:
+            # Check if already exists
             cur.execute("SELECT id FROM pharmacy_medicine WHERE medicine_name = (SELECT medicine_name FROM master_medicine WHERE id = %s)", (med_id,))
             if cur.fetchone():
                 already_exists += 1
@@ -173,8 +179,8 @@ def add_from_master():
         mysql.connection.commit()
         
         if success_count > 0:
-            flash('medicine(s) added successfully', 'success')
+            flash(f'{success_count} medicine(s) added successfully', 'success')
         if already_exists > 0:
-            flash('medicine(s) already exist in your list', 'warning')
+            flash(f'{already_exists} medicine(s) already exist in your list', 'warning')
             
         return redirect(url_for('pharm_name.med_details'))

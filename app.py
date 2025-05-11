@@ -13,6 +13,8 @@ from medicine.pharmacy_med import pharm_name
 from medicine.medicine_stock import medstock
 from medicine.med_ratelist import ratelist
 from Billing.billing_route import billing
+from Billing.stock_report import lowstock
+from Billing.business_report import report_bp
 from medicine.pharmacy_details import pharm_details
 from flask_mysqldb import MySQL
 import sys
@@ -47,6 +49,8 @@ app.register_blueprint(medstock)
 app.register_blueprint(ratelist)
 app.register_blueprint(billing)
 app.register_blueprint(pharm_details)
+app.register_blueprint(lowstock)
+app.register_blueprint(report_bp)
 
 
 

@@ -58,9 +58,9 @@
             <td>{{item.purchase_price}}</td>
             <td>{{item.selling_price}}</td>
             <td class="text-center">
-              {% if item.quantity < 5 %}
+              {% if item.quantity == 0 %}
               <span class="badge rounded-pill bg-danger" title="Low Stock">Low</span>
-              {% elif item.quantity == 5 %}
+              {% elif item.quantity < 6 %}
               <span class="badge rounded-pill bg-warning" title="Medium Stock">Medium</span>
               {% else %}
               <span class="badge rounded-pill bg-success" title="Good Stock">Good</span>
@@ -85,11 +85,11 @@
                         <input type="hidden" name="pharmacy_id" value="{{ session['pharmacy']['id'] }}">
               
                           <div class="medname">
-                            <label for="description" class="form-label">Medicine Name</label>
+                            <label for="description" class="form-label">Medicine Name<span style="color: red;">*</span></label>
                             <select class="form-select" name="medicine_id" id="type_id">
                               <option value="{{item.medicine_id}}">{{item.medicine_name}}</option>
                               {% for med in med_names %}
-                              {%if med.id != item.medicine_id%}
+                              {%if med.id != item.pharmacy_medicine_id %}
                               <option value="{{med.id}}">{{ med.medicine_name }}</option>
                               {%endif%}
                               {% endfor %}
@@ -109,7 +109,7 @@
                           </div>
               
                           <div class="mb-3 col-md-6">
-                            <label for="expiry" class="form-label">Expiry Date</label>
+                            <label for="expiry" class="form-label">Expiry Date<span style="color: red;">*</span></label>
                             <input class="form-control" type="date" id="date" name="expiry_date" value="{{item.expiry_date}}"
                               min="<?php echo date('Y-m-d'); ?>" onchange="validateDate(this)"></input>
                           </div>
@@ -117,13 +117,13 @@
               
               
                         <div class="mb-3 px-3">
-                          <label for="description" class="form-label">Puchase Price (in ₹)</label>
+                          <label for="description" class="form-label">Puchase Price (in ₹)<span style="color: red;">*</span></label>
                           <input class="form-control" id="input" name="purchase_price" value="{{item.purchase_price}}"
                             rows="3"></input>
                         </div>
               
                         <div class="mb-3 px-3">
-                          <label for="description" class="form-label">Selling Price (in ₹)</label>
+                          <label for="description" class="form-label">Selling Price (in ₹)<span style="color: red;">*</span></label>
                           <input class="form-control" id="input" name="selling_price" value="{{item.selling_price}}"
                             rows="3"></input>
                         </div>
@@ -170,7 +170,7 @@
           <input type="hidden" name="pharmacy_id" value="{{ session['pharmacy']['id'] }}">
 
             <div class="medname">
-              <label for="description" class="form-label">Medicine Name</label>
+              <label for="description" class="form-label">Medicine Name<span style="color: red;">*</span></label>
               <select class="form-select" name="medicine_id" id="type_id">
                 <option value="">select</option>
                 {% for med in med_names %}
@@ -181,7 +181,7 @@
           </div>
 
           <div class="mb-3 px-3">
-            <label for="description" class="form-label">Quantity</label>
+            <label for="description" class="form-label">Quantity<span style="color: red;">*</span></label>
             <input type="number" class="form-control" id="input" name="quantity" placeholder="Enter Quantity" rows="3">
           </div>
 
@@ -192,7 +192,7 @@
             </div>
 
             <div class="mb-3 col-md-6">
-              <label for="expiry" class="form-label">Expiry Date</label>
+              <label for="expiry" class="form-label">Expiry Date<span style="color: red;">*</span></label>
               <input class="form-control" type="date" id="date" name="expiry_date" placeholder="Enter Expiry Date"
                 min="<?php echo date('Y-m-d'); ?>" onchange="validateDate(this)"></input>
             </div>
@@ -200,13 +200,13 @@
 
 
           <div class="mb-3 px-3">
-            <label for="description" class="form-label">Puchase Price (in ₹)</label>
+            <label for="description" class="form-label">Puchase Price (in ₹)<span style="color: red;">*</span></label>
             <input class="form-control" id="input" name="purchase_price" placeholder="Enter Purchase Price"
               rows="3"></input>
           </div>
 
           <div class="mb-3 px-3">
-            <label for="description" class="form-label">Selling Price (in ₹)</label>
+            <label for="description" class="form-label">Selling Price (in ₹)<span style="color: red;">*</span></label>
             <input class="form-control" id="input" name="selling_price" placeholder="Enter Selling Price"
               rows="3"></input>
           </div>

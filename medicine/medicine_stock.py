@@ -19,13 +19,13 @@ def stock():
         cur.execute(
             """SELECT ps.*, mm.medicine_name
             FROM pharmacy_stock ps
-            JOIN master_medicine mm ON ps.medicine_id = mm.id
+            JOIN pharmacy_medicine mm ON ps.pharmacy_medicine_id = mm.id
             WHERE ps.pharmacy_id=%s
             """, (pharmacy_id,))
         items = cur.fetchall()
         
         # Get all medicine names for dropdown
-        cur.execute("SELECT id, medicine_name FROM master_medicine")
+        cur.execute("SELECT id, medicine_name FROM pharmacy_medicine")
         med_names = cur.fetchall()
         
         return render_template('medicine_stocks.html',
@@ -48,7 +48,7 @@ def addmedstock():
         selling_price = request.form['selling_price']
         
         cur.execute("""INSERT INTO pharmacy_stock 
-                    (pharmacy_id, medicine_id, quantity, batch_number, expiry_date, purchase_price, selling_price) 
+                    (pharmacy_id, pharmacy_medicine_id, quantity, batch_number, expiry_date, purchase_price, selling_price) 
                     VALUES (%s, %s, %s, %s, %s, %s, %s)""",
                     (pharmacy_id, medicine_id, quantity, batch_number, expiry_date, purchase_price, selling_price))
                 
@@ -70,7 +70,7 @@ def editmedstock():
         selling_price = request.form['selling_price']
         
         cur.execute("""UPDATE pharmacy_stock 
-                    SET pharmacy_id=%s, medicine_id=%s, quantity=%s, batch_number=%s, 
+                    SET pharmacy_id=%s, pharmacy_medicine_id=%s, quantity=%s, batch_number=%s, 
                     expiry_date=%s, purchase_price=%s, selling_price=%s 
                     WHERE id=%s""",
                     (pharmacy_id, medicine_id, quantity, batch_number, expiry_date, 

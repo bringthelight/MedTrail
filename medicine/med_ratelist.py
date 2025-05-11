@@ -8,7 +8,6 @@ mysql = MySQL()
 
 @ratelist.route('/med_ratelist', methods=['GET', 'POST'])
 def medratelist():
-
     if 'user' not in session:
         flash('Please login first', 'error')
         return redirect(url_for('auth_bp.login'))
@@ -16,6 +15,7 @@ def medratelist():
     pharmacy_id = session['user'].get('pharmacy_service_id')
     cur = mysql.connection.cursor()
     if request.method=='GET':
+        # Get ratelist with medicine details
         cur.execute(
             """SELECT pharmacy_ratelist.*, pharmacy_medicine.medicine_name
             FROM pharmacy_ratelist 
@@ -24,45 +24,51 @@ def medratelist():
             """
             ,(pharmacy_id,))
         items = cur.fetchall()
-        # print(items)
+        print(items, 'hahahahaha')
         
-        # cur.execute("SELECT id, medicine_name FROM pharmacy_medicine")
-        # med_names = cur.fetchall()
-        
-        # cur.execute("SELECT id, pharmacy_name FROM pharmacy_service")
-        # pharm_name = cur.fetchall()
+        # Get medicines specific to the pharmacy
+
+        cur.execute("""
+            SELECT id, medicine_name 
+            FROM pharmacy_medicine 
+            WHERE pharmacy_id=%s
+        """, (pharmacy_id,))
+        med_names = cur.fetchall()
+        print(med_names, 'ihihihihihihihi')
 
         return render_template('med_ratelist.html', 
-                             items=items)
+                             items=items,
+                             med_names=med_names)
 
-    return render_template('med_ratelist.html', items = items)
+    return render_template('med_ratelist.html', items=items)
 
 @ratelist.route('/addmed_ratelist', methods=['POST'])
 def addratelist():
     try:
         cur = mysql.connection.cursor()
 
-        # Fetch data from form
-        pharmacy_id = request.form.get('pharmacy_id')
-        medicine_data = request.form.get('medicine_id')
+        pharmacy_id = session['user'].get('pharmacy_service_id')
+        pharmacy_medicine_id = request.form.get('medicine_id')
         amount = request.form.get('amount')
         discount = request.form.get('discount')
 
-        print("Raw medicine_data:", medicine_data)  # Debug
-
-        # Validate all fields are received
-        if not all([pharmacy_id, medicine_data, amount, discount]):
+        if not all([pharmacy_medicine_id, amount, discount]):
             flash('All fields are required.', 'danger')
             return redirect(url_for('ratelist.medratelist'))
 
-        # Split medicine_data: should be in format "id_name"
-        medicine_parts = medicine_data.split('_', 1)  # split only on first _
-        if len(medicine_parts) != 2:
-            flash('Invalid medicine data format. Please select a valid medicine.', 'danger')
+        # Get medicine name from pharmacy_medicine
+        cur.execute("""
+            SELECT medicine_name 
+            FROM pharmacy_medicine 
+            WHERE id=%s AND pharmacy_id=%s
+        """, (pharmacy_medicine_id, pharmacy_id))
+        
+        medicine = cur.fetchone()
+        if not medicine:
+            flash('Invalid medicine selected.', 'danger')
             return redirect(url_for('ratelist.medratelist'))
 
-        pharmacy_medicine_id = medicine_parts[0]
-        ratelist_name = medicine_parts[1]
+        ratelist_name = medicine['medicine_name']
 
         # Insert into DB
         cur.execute(
@@ -79,7 +85,7 @@ def addratelist():
 
     except Exception as e:
         mysql.connection.rollback()
-        print("Error:", str(e))  # Print for terminal logs
+        print("Error:", str(e))
         flash(f'Error adding ratelist: {str(e)}', 'danger')
 
     finally:
@@ -94,27 +100,34 @@ def addratelist():
 def editratelist(id):
     try:
         cur = mysql.connection.cursor()
-
-        pharmacy_id = request.form.get('pharmacy_id')
-        medicine_data = request.form.get('medicine_id')  # e.g. "1_Paracetamol"
+        pharmacy_id = session['user'].get('pharmacy_service_id')
+        pharmacy_medicine_id = request.form.get('medicine_id')
         amount = request.form.get('amount')
         discount = request.form.get('discount')
 
-        # Split the medicine data
-        medicine_parts = medicine_data.split('_', 1)
-        if len(medicine_parts) != 2:
-            flash('Invalid medicine data format.', 'danger')
+        # Get medicine name
+        cur.execute("""
+            SELECT medicine_name 
+            FROM pharmacy_medicine 
+            WHERE id = %s AND pharmacy_id = %s
+        """, (pharmacy_medicine_id, pharmacy_id))
+        
+        medicine = cur.fetchone()
+        if not medicine:
+            flash('Invalid medicine selected.', 'danger')
             return redirect(url_for('ratelist.medratelist'))
 
-        pharmacy_medicine_id = medicine_parts[0]
-        ratelist_name = medicine_parts[1]
+        ratelist_name = medicine['medicine_name']
 
-        # Perform the update
+        # Update ratelist
         cur.execute("""
             UPDATE pharmacy_ratelist 
-            SET pharmacy_id=%s, pharmacy_medicine_id=%s, ratelist_name=%s, amount=%s, discount=%s 
-            WHERE id=%s
-        """, (pharmacy_id, pharmacy_medicine_id, ratelist_name, amount, discount, id))
+            SET pharmacy_medicine_id = %s, 
+                ratelist_name = %s,
+                amount = %s, 
+                discount = %s 
+            WHERE id = %s AND pharmacy_id = %s
+        """, (pharmacy_medicine_id, ratelist_name, amount, discount, id, pharmacy_id))
 
         mysql.connection.commit()
         flash('Ratelist updated successfully.', 'success')

@@ -36,15 +36,27 @@
                 <th width="50px">
                 </th>
                 <th>Medicine Name</th>
+                <th>Already Selected</th>
               </tr>
             </thead>
             <tbody>
               {% for med in master_medicines %}
               <tr>
                 <td>
-                  <input type="checkbox" name="selected_medicines" value="{{ med.id }}" class=" medicine-checkbox">
+                  {% if med.medicine_name in selected_medicines %}
+                    <input type="checkbox" disabled checked class="form bg-success">
+                  {% else %}
+                    <input type="checkbox" name="selected_medicines" value="{{ med.id }}" class="medicine-checkbox ">
+                  {% endif %}
                 </td>
                 <td>{{ med.medicine_name }}</td>
+                <td>
+                  {% if med.medicine_name in selected_medicines %}
+                    <span class="badge bg-success">Yes</span>
+                  {% else %}
+                    <span class="badge bg-light text-dark">No</span>
+                  {% endif %}
+                </td>
               </tr>
               {% endfor %}
             </tbody>
@@ -65,12 +77,10 @@
   $(document).ready(function() {
     $('#master_med').DataTable({
       "pageLength": 25,
-      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
-    });
-
-    // Select all checkbox functionality
-    $('#select-all').change(function() {
-      $('.medicine-checkbox').prop('checked', this.checked);
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      "columnDefs": [
+        { "orderable": false, "targets": 0 } // Disable sorting on checkbox column
+      ]
     });
   });
 </script>

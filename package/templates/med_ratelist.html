@@ -69,33 +69,19 @@
                         <form action="{{ url_for('ratelist.editratelist', id=item.id) }}" method="POST">
 
               
-                        <div class="row">
-                          <div class="mb-3 col-md-6">
-                            <label for="type" class="form-label">Pharmacy Name</label>
-                            <select class="form-select" name="pharmacy_id" id="type_id">
-                              <option value="{{item.pharmacy_id}}">{{item.pharmacy_name}}</option>
-                              {% for pharm in pharm_name %}
-                              {% if pharm.id != item.pharmacy_id %}
-                              <option value="{{pharm.id}}">{{ pharm.pharmacy_name }}</option>
-                              {% endif %}
-                              {% endfor %}
-                            </select>
-                          </div>
               
               
-                          <div class="mb-3 col-md-6">
-                            <label for="description" class="form-label">Ratelist Name</label>
-                            <select class="form-select" name="medicine_id" id="medicine_id">
-                                <option value="{{item.medicine_id}}_{{item.medicine_name}}">{{item.medicine_name}}</option>
-                                {% for med in med_names %}
-                                  {% if med.id != item.medicine_id %}
-                                    <option value="{{ med.id }}_{{ med.medicine_name }}">{{ med.medicine_name }}</option>
-                                  {% endif %}
-                                {% endfor %}
-                              </select>
-                              
-                          </div>
-                        </div>
+                          <div class="mb-3">
+    <label for="medicine_id" class="form-label">Ratelist Name</label>
+    <select class="form-select" name="medicine_id" id="medicine_id" required>
+        <option value="">Select Medicine</option>
+        {% for med in med_names %}
+            <option value="{{ med.id }}" {% if med.id == item.pharmacy_medicine_id %}selected{% endif %}>
+                {{ med.medicine_name }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
               
                         <div class="row">
                             <div class="mb-3 col-md-6">
@@ -149,28 +135,16 @@
       <div class="modal-body">
         <form action="{{ url_for('ratelist.addratelist') }}" method="POST">
 
-          <div class="row">
-            <div class="mb-3 col-md-6">
-              <label for="type" class="form-label">Pharmacy Name</label>
-              <select class="form-select" name="pharmacy_id" id="type_id">
-                <option value="">select</option>
-                {% for pharm in pharm_name %}
-                <option value="{{pharm.id}}">{{ pharm.pharmacy_name }}</option>
-                {% endfor %}
-              </select>
-            </div>
 
-
-            <div class="mb-3 col-md-6">
-              <label for="description" class="form-label">Medicine Name</label>
-              <select class="form-select" name="medicine_id" id="type_id">
-                <option value="">select</option>
-                {% for med in med_names %}
-                <option value="{{ med.id }}_{{ med.medicine_name }}">{{ med.medicine_name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
+          <div class="mb-3">
+    <label for="medicine_id" class="form-label">Medicine Name</label>
+    <select name="medicine_id" class="form-select" required>
+        <option value="">Select Medicine</option>
+        {% for med in med_names %}
+            <option value="{{ med.id }}">{{ med.medicine_name }}</option>
+        {% endfor %}
+    </select>
+</div>
 
           <div class="row">
             <div class="mb-3 col-md-6">

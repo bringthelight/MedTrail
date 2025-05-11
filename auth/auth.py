@@ -32,7 +32,7 @@ def login():
             pharmacy = cur.fetchone()
             session['pharmacy'] = pharmacy
 
-            flash('You are logged in successfully...','success')
+            flash(f"'{ session['pharmacy']['pharmacy_name'] }' successfully logged in", 'success')
             return redirect(url_for('auth_bp.dashboard'))
         else:
             flash('Incorrect email or password, please enter correct details','warning')

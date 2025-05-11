@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask import Blueprint
 from flask_mysqldb import MySQLdb,MySQL
 
@@ -25,6 +25,8 @@ def add():
         unitname=request.form['medname']
         shname=request.form['shortname']
         cur=cur.execute("INSERT INTO master_medicine_unit (unit_name,unit_short_name) VALUES (%s, %s)", (unitname, shname,))
+
+        flash(f"{unitname} added successfully!",'success')
         
         mysql.connection.commit()
         
