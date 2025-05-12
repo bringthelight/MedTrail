@@ -17,6 +17,13 @@ def medicine():
         type = request.form['type']
         description = request.form['description']
         added_by = session['user']['full_name']
+
+        cur.execute("SELECT * FROM master_medicine_type WHERE LOWER(type_name) = LOWER(%s)", (type,))
+        existing_medicine = cur.fetchone()
+        
+        if existing_medicine:
+            flash("Can't add duplicate medicine's type", "danger")
+            return redirect(url_for('meds.meds'))
         
         cur.execute("""
                 INSERT INTO master_medicine_type 

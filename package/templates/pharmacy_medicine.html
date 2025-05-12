@@ -82,6 +82,8 @@
                                             <form action="{{ url_for('pharm_name.edit_mednames', id=item.id) }}"
                                                 method="POST">
 
+                                                <input type="hidden" name="pharmacy_id" value="{{ session['pharmacy']['id'] }}">
+
                                                 <div class="row">
                                                     <div class="mb-3 col-md-6">
                                                         <label for="type" class="form-label">Medicine Name<span
@@ -190,6 +192,8 @@
             </div>
             <div class="modal-body">
                 <form action="{{ url_for('pharm_name.add_medicine') }}" method="POST">
+
+                    <input type="hidden" name="pharmacy_id" value="{{ session['pharmacy']['id'] }}">
                     <div class="row">
                         <div class="mb-3 col-md-6">
                             <label for="type" class="form-label">Medicine Name<span style="color: red;">*</span></label>

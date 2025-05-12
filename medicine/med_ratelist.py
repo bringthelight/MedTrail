@@ -70,6 +70,16 @@ def addratelist():
 
         ratelist_name = medicine['medicine_name']
 
+        cur.execute("""
+            SELECT id FROM pharmacy_ratelist 
+            WHERE pharmacy_id = %s 
+            AND LOWER(ratelist_name) = LOWER(%s)
+        """, (pharmacy_id, ratelist_name))
+        
+        if cur.fetchone():
+            flash(f'Cannot add duplicate ratelist. A ratelist for {ratelist_name} already exists.', 'warning')
+            return redirect(url_for('ratelist.medratelist'))
+
         # Insert into DB
         cur.execute(
             """
@@ -118,6 +128,17 @@ def editratelist(id):
             return redirect(url_for('ratelist.medratelist'))
 
         ratelist_name = medicine['medicine_name']
+
+        cur.execute("""
+            SELECT id FROM pharmacy_ratelist 
+            WHERE pharmacy_id = %s 
+            AND LOWER(ratelist_name) = LOWER(%s)
+            AND id != %s
+        """, (pharmacy_id, ratelist_name, id))
+        
+        if cur.fetchone():
+            flash(f'Cannot update ratelist. Another ratelist for {ratelist_name} already exists.', 'warning')
+            return redirect(url_for('ratelist.medratelist'))
 
         # Update ratelist
         cur.execute("""

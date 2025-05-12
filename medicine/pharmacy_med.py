@@ -10,8 +10,16 @@ mysql = MySQL()
 @pharm_name.route('/medicines', methods=['GET'])
 def med_details():
     if request.method == "GET":
+
+        if 'user' not in session:
+            flash('Please login first', 'error')
+            return redirect(url_for('auth_bp.login'))
+        
         # Get medicine data with joins to related tables
         cur = mysql.connection.cursor()
+
+        pharmacy_id = session['user'].get('pharmacy_service_id')
+
         cur.execute("""
             SELECT m.id, m.medicine_name, m.generic_name, m.composition, m.strength, 
                    t.type_name, u.unit_short_name, man.manufacturer_name, m.type_id, 
@@ -20,8 +28,10 @@ def med_details():
             LEFT JOIN master_medicine_type t ON m.type_id = t.id
             LEFT JOIN master_medicine_unit u ON m.unit_id = u.id
             LEFT JOIN master_medicine_manufacturer man ON m.manufacturer_id = man.id
+            WHERE m.pharmacy_id=%s
             ORDER BY m.id DESC
-        """)
+            
+        """, (pharmacy_id,))
         data = cur.fetchall()
         
         # Get medicine types for dropdown
@@ -43,6 +53,7 @@ def med_details():
 def add_medicine():
     # Add new medicine
     if request.method == "POST":
+        pharmacy_id = request.form['pharmacy_id']
         medicine_name = request.form['medsname']
         generic_name = request.form['genericname']
         composition = request.form['composition']
@@ -56,12 +67,24 @@ def add_medicine():
         current_time = datetime.now()
         
         cur = mysql.connection.cursor()
+        
+        # Check if medicine already exists in pharmacy's medicine list
+        cur.execute("""
+            SELECT id FROM pharmacy_medicine 
+            WHERE LOWER(medicine_name) = LOWER(%s) AND pharmacy_id = %s
+        """, (medicine_name, pharmacy_id))
+        
+        if cur.fetchone():
+            flash('Cannot add duplicate medicine. A medicine with this name already exists.', 'warning')
+            return redirect(url_for('pharm_name.med_details'))
+        
+        # If no duplicate found, insert the new medicine
         cur.execute("""
             INSERT INTO pharmacy_medicine 
-            (medicine_name, generic_name, composition, strength, type_id, unit_id, manufacturer_id, added_by, added_date) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            (pharmacy_id, medicine_name, generic_name, composition, strength, type_id, unit_id, manufacturer_id, added_by, added_date) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, 
-            (medicine_name, generic_name, composition, strength, type_id, unit_id, manufacturer_id, added_by, current_time))
+            (pharmacy_id, medicine_name, generic_name, composition, strength, type_id, unit_id, manufacturer_id, added_by, current_time))
         mysql.connection.commit()
         
         flash('Medicine added successfully', 'success')
@@ -70,6 +93,7 @@ def add_medicine():
 @pharm_name.route('/edit-medicine/<int:id>', methods=['POST'])
 def edit_mednames(id):
     if request.method == "POST":
+        pharmacy_id = request.form['pharmacy_id']
         medicine_name = request.form['medicine_name']
         generic_name = request.form['genericname']
         composition = request.form['composition']
@@ -83,14 +107,28 @@ def edit_mednames(id):
         current_time = datetime.now()
         
         cur = mysql.connection.cursor()
+        
+        # Check if another medicine with same name exists (excluding current medicine)
+        cur.execute("""
+            SELECT id FROM pharmacy_medicine 
+            WHERE LOWER(medicine_name) = LOWER(%s) 
+            AND pharmacy_id = %s 
+            AND id != %s
+        """, (medicine_name, pharmacy_id, id))
+        
+        if cur.fetchone():
+            flash('Cannot update to duplicate medicine name. Another medicine with this name already exists.', 'warning')
+            return redirect(url_for('pharm_name.med_details'))
+            
+        # If no duplicate found, update the medicine
         cur.execute("""
             UPDATE pharmacy_medicine 
-            SET medicine_name = %s, generic_name = %s, composition = %s, strength = %s,
+            SET pharmacy_id =%s, medicine_name = %s, generic_name = %s, composition = %s, strength = %s,
                 type_id = %s, unit_id = %s, manufacturer_id = %s, 
                 updated_by = %s, updated_date = %s 
             WHERE id = %s
             """, 
-            (medicine_name, generic_name, composition, strength, type_id, unit_id, 
+            (pharmacy_id, medicine_name, generic_name, composition, strength, type_id, unit_id, 
              manufacturer_id, updated_by, current_time, id))
         mysql.connection.commit()
         

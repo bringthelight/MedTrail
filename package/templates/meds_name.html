@@ -31,7 +31,7 @@
 
       <div class="table_heading d-flex justify-content-between">
         <h3 class="text-secondary">Medicine Names</h3>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addmednames">
+        <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#addmednames">
           Add Medicines
         </button>
       </div>
@@ -83,7 +83,7 @@
 
                         <div class="row">
                           <div class="mb-3 col-md-6">
-                            <label for="type" class="form-label">Medicine Name</label>
+                            <label for="type" class="form-label">Medicine Name<span style="color: red;">*</span></label>
                             <input type="text" class="form-control" id="type" name="medicine_name"
                               value="{{item.medicine_name}}" required>
                           </div>
@@ -104,7 +104,7 @@
 
                         <div class="row">
                           <div class="mb-3 col-md-6">
-                            <label for="description" class="form-label">Medicine Type ID</label>
+                            <label for="description" class="form-label">Medicine Type ID<span style="color: red;">*</span></label>
                             <select class="form-select" name="type_id" id="type_id">
                               <option value="{{item.type_id}}">{{item.type_name}}</option>
                               {% for type in med_types %}
@@ -116,7 +116,7 @@
                           </div>
 
                           <div class="mb-3 col-md-6">
-                            <label for="description" class="form-label">Medicine Unit ID</label>
+                            <label for="description" class="form-label">Medicine Unit ID<span style="color: red;">*</span></label>
                             <select class="form-select" name="unit_id" id="unit_id">
                               <option value="{{ item.unit_id }}">{{ item.unit_short_name }}</option>
                               {% for unit in med_units %}
@@ -136,7 +136,7 @@
                         </div>
 
                         <div class="mb-3">
-                          <label for="description" class="form-label">Menufacturer</label>
+                          <label for="description" class="form-label">Menufacturer<span style="color: red;">*</span></label>
                           <select class="form-select" name="manufacturer_id" id="manufacturer_id">
                             <option value="{{ item.manufacturer_id }}">{{ item.manufacturer_name }}</option>
                             {% for manufacturer in manu %}
@@ -148,8 +148,8 @@
                         </div>
 
                         <div class="text-end">
-                          <button type="submit" class="btn btn-primary">Submit</button>
-                          <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn bg-gradient-primary">Submit</button>
+                          <button type="button" class="btn bg-gradient-secondary me-2" data-bs-dismiss="modal">Cancel</button>
                         </div>
                       </form>
                     </div>
@@ -195,7 +195,7 @@
 
           <div class="row">
             <div class="mb-3 col-md-6">
-              <label for="type" class="form-label">Medicine Name</label>
+              <label for="type" class="form-label">Medicine Name<span style="color: red;">*</span></label>
               <input type="text" class="form-control" id="type" name="medsname" placeholder="Enter Medicine type"
                 required>
             </div>
@@ -215,7 +215,7 @@
 
           <div class="row">
             <div class="mb-3 col-md-6">
-              <label for="description" class="form-label">Medicine Type ID</label>
+              <label for="description" class="form-label">Medicine Type ID<span style="color: red;">*</span></label>
               <select class="form-select" name="type_id" id="type_id">
                 <option value="">select</option>
                 {% for type in med_types %}
@@ -225,7 +225,7 @@
             </div>
 
             <div class="mb-3 col-md-6">
-              <label for="description" class="form-label">Medicine Unit ID</label>
+              <label for="description" class="form-label">Medicine Unit ID<span style="color: red;">*</span></label>
               <select class="form-select" name="unit_id" id="unit_id">
                 <option value="">select</option>
                 {% for unit in med_units %}
@@ -242,7 +242,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="description" class="form-label">Menufacturer</label>
+            <label for="description" class="form-label">Menufacturer<span style="color: red;">*</span></label>
             <select class="form-select" name="manufacturer_id" id="manufacturer_id" required>
               <option value="">Select Manufacturer</option>
               {% for manufacturer in manu %}
@@ -252,8 +252,8 @@
           </div>
 
           <div class="text-end">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn bg-gradient-primary">Submit</button>
+            <button type="button" class="btn bg-gradient-secondary me-2" data-bs-dismiss="modal">Cancel</button>
           </div>
         </form>
       </div>

@@ -72,7 +72,7 @@
               
               
                           <div class="mb-3">
-    <label for="medicine_id" class="form-label">Ratelist Name</label>
+    <label for="medicine_id" class="form-label">Ratelist Name<span style="color: red;">*</span></label>
     <select class="form-select" name="medicine_id" id="medicine_id" required>
         <option value="">Select Medicine</option>
         {% for med in med_names %}
@@ -85,7 +85,7 @@
               
                         <div class="row">
                             <div class="mb-3 col-md-6">
-                                <label for="description" class="form-label">Amount</label>
+                                <label for="description" class="form-label">Amount<span style="color: red;">*</span></label>
                                 <input class="form-control" type="number" id="input" name="amount" value="{{item.amount}}">
                               </div>
                               
@@ -137,7 +137,7 @@
 
 
           <div class="mb-3">
-    <label for="medicine_id" class="form-label">Medicine Name</label>
+    <label for="medicine_id" class="form-label">Ratelist Name<span  style="color: red;">*</span></label>
     <select name="medicine_id" class="form-select" required>
         <option value="">Select Medicine</option>
         {% for med in med_names %}
@@ -148,7 +148,7 @@
 
           <div class="row">
             <div class="mb-3 col-md-6">
-              <label for="description" class="form-label">Amount</label>
+              <label for="description" class="form-label">Amount<span style="color: red;">*</span></label>
               <input class="form-control" type="number" id="input" name="amount" placeholder="Enter Amount" rows="3">
             </div>
 

@@ -20,6 +20,16 @@ def edit():
         updated_by = session['user']['full_name']
 
         cur.execute("""
+            SELECT * FROM master_medicine_type 
+            WHERE LOWER(type_name) = LOWER(%s) AND id != %s
+        """, (type, id))
+        existing_medicine = cur.fetchone()
+        
+        if existing_medicine:
+            flash("Can't add duplicate medicine's type", "danger")
+            return redirect(url_for('meds.meds'))
+
+        cur.execute("""
             UPDATE master_medicine_type
             SET type_name=%s, description=%s, updated_by=%s
             WHERE id= %s """, (type, description, updated_by, id))

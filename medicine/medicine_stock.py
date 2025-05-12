@@ -46,6 +46,16 @@ def addmedstock():
         expiry_date = request.form['expiry_date']
         purchase_price = request.form['purchase_price']
         selling_price = request.form['selling_price']
+
+        cur.execute("""
+            SELECT id FROM pharmacy_stock 
+            WHERE pharmacy_id = %s 
+            AND pharmacy_medicine_id = %s
+        """, (pharmacy_id, medicine_id))
+        
+        if cur.fetchone():
+            flash(f'Cannot add duplicate stock. Medicine already exists.', 'warning')
+            return redirect(url_for('medstock.stock'))
         
         cur.execute("""INSERT INTO pharmacy_stock 
                     (pharmacy_id, pharmacy_medicine_id, quantity, batch_number, expiry_date, purchase_price, selling_price) 
@@ -60,24 +70,26 @@ def addmedstock():
 def editmedstock(id):
         cur = mysql.connection.cursor()
         pharmacy_id = session['user'].get('pharmacy_service_id')
-        
-        # First get the existing pharmacy_medicine_id
-        cur.execute("""SELECT pharmacy_medicine_id 
-                    FROM pharmacy_stock 
-                    WHERE id=%s AND pharmacy_id=%s""", 
-                    (id, pharmacy_id))
-        existing_stock = cur.fetchone()
-        
-        if not existing_stock:
-            flash('Stock record not found', 'error')
-            return redirect(url_for('medstock.stock'))
             
         if request.method=='POST':
+            pharmacy_id = request.form['pharmacy_id']
+            medicine_id  = request.form['medicine_id']
             quantity = request.form['quantity']
             batch_number = request.form['batch_number']
             expiry_date = request.form['expiry_date']
             purchase_price = request.form['purchase_price']
             selling_price = request.form['selling_price']
+
+            cur.execute("""
+                SELECT id FROM pharmacy_stock 
+                WHERE pharmacy_id = %s 
+                AND pharmacy_medicine_id = %s
+                AND id != %s
+            """, (pharmacy_id, medicine_id, id))
+            
+            if cur.fetchone():
+                flash('Cannot update stock. Another stock entry with same name already exists.', 'warning')
+                return redirect(url_for('medstock.stock'))
             
             cur.execute("""UPDATE pharmacy_stock 
                     SET quantity=%s, batch_number=%s, 
