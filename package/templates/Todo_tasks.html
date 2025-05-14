@@ -1,0 +1,225 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+
+<div class="container-fluid mx-8 px-10 mt-10">
+    
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      <h5 class="mb-0">Todo List</h5>
+      <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+        <i class="fas fa-plus me-2"></i>Add Task
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table align-items-center mb-0">
+          <thead>
+            <tr>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Client Name</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone Number</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-1">Medicine Name</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">Expected Date</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">Status</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-7">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="todoList">
+            <!-- Todo items will be dynamically added here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="taskForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="clientName" class="form-label">Client Name</label>
+            <input type="text" class="form-control" id="clientName" required>
+          </div>
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="phoneNumber" pattern="[0-9]{10}" required>
+          </div>
+          <div class="mb-3">
+            <label for="medicineName" class="form-label">Medicine Name</label>
+            <input type="text" class="form-control" id="medicineName" required>
+          </div>
+          <div class="mb-3">
+            <label for="expectedDate" class="form-label">Expected Date</label>
+            <input type="date" class="form-control" id="expectedDate" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn bg-gradient-primary">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+// Load tasks from localStorage when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  loadTasks();
+  
+  // Date validation setup
+  const dateInput = document.getElementById('expectedDate');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  
+  // Set minimum date to tomorrow
+  dateInput.min = tomorrow.toISOString().split('T')[0];
+  
+  // Validate on change
+  dateInput.addEventListener('change', function() {
+    const selectedDate = new Date(this.value);
+    selectedDate.setHours(0, 0, 0, 0);
+    
+    if (selectedDate <= today) {
+      alert('Please select a future date');
+      this.value = ''; // Clear invalid date
+    }
+  });
+});
+
+// Handle form submission
+document.getElementById('taskForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  // Get form values
+  const clientName = document.getElementById('clientName').value;
+  const phoneNumber = document.getElementById('phoneNumber').value;
+  const medicineName = document.getElementById('medicineName').value;
+  const expectedDate = document.getElementById('expectedDate').value;
+  
+  // Create new task object
+  const task = {
+    id: Date.now(), // Unique ID using timestamp
+    clientName,
+    phoneNumber,
+    medicineName,
+    expectedDate,
+    status: 'pending'
+  };
+  
+  // Add task to localStorage
+  const tasks = getTasks();
+  tasks.push(task);
+  saveTasks(tasks);
+  
+  // Add task to UI
+  addTaskToUI(task);
+  
+  // Clear form and close modal
+  document.getElementById('taskForm').reset();
+  bootstrap.Modal.getInstance(document.getElementById('addTaskModal')).hide();
+});
+
+// Handle complete and delete actions
+document.getElementById('todoList').addEventListener('click', function(e) {
+  const row = e.target.closest('tr');
+  const taskId = row.dataset.taskId;
+  
+  if (e.target.classList.contains('complete-task')) {
+    const statusCell = row.querySelector('.badge');
+    statusCell.classList.remove('bg-gradient-warning');
+    statusCell.classList.add('bg-gradient-success');
+    statusCell.textContent = 'Completed';
+    
+    // Update status in localStorage
+    const tasks = getTasks();
+    const task = tasks.find(t => t.id == taskId);
+    if (task) {
+      task.status = 'completed';
+      saveTasks(tasks);
+    }
+  }
+  
+  if (e.target.classList.contains('delete-task')) {
+    if (confirm('Are you sure you want to delete this task?')) {
+      // Remove from localStorage
+      const tasks = getTasks();
+      const filteredTasks = tasks.filter(t => t.id != taskId);
+      saveTasks(filteredTasks);
+      
+      // Remove from UI
+      row.remove();
+    }
+  }
+});
+
+// Phone number validation
+document.getElementById('phoneNumber').addEventListener('input', function() {
+  this.value = this.value.replace(/\D/g, '').slice(0, 10);
+});
+
+// Helper functions
+function getTasks() {
+  return JSON.parse(localStorage.getItem('tasks') || '[]');
+}
+
+function saveTasks(tasks) {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function loadTasks() {
+  const tasks = getTasks();
+  const todoList = document.getElementById('todoList');
+  todoList.innerHTML = ''; // Clear existing tasks
+  
+  tasks.forEach(task => {
+    addTaskToUI(task);
+  });
+}
+
+function addTaskToUI(task) {
+  const todoList = document.getElementById('todoList');
+  const newRow = document.createElement('tr');
+  newRow.dataset.taskId = task.id;
+  
+  newRow.innerHTML = `
+    <td>
+      <div class="d-flex px-2 py-1">
+        <div class="d-flex flex-column justify-content-center">
+          <h6 class="mb-0 text-sm">${task.clientName}</h6>
+        </div>
+      </div>
+    </td>
+    <td>
+      <p class="text-xs font-weight-bold mb-0">${task.phoneNumber}</p>
+    </td>
+    <td>
+      <p class="text-xs font-weight-bold mb-0">${task.medicineName}</p>
+    </td>
+    <td>
+      <p class="text-xs font-weight-bold mb-0">${task.expectedDate}</p>
+    </td>
+    <td>
+      <span class="badge badge-sm ${task.status === 'completed' ? 'bg-gradient-secondary' : 'bg-gradient-warning'}">
+        ${task.status === 'completed' ? 'Completed' : 'Pending'}
+      </span>
+    </td>
+    <td>
+      <button class="btn btn-sm bg-gradient-primary complete-task">Complete</button>
+      <button class="btn btn-sm bg-gradient-secondary delete-task">Delete</button>
+    </td>
+  `;
+  
+  todoList.appendChild(newRow);
+}
+</script>
+{% endblock %}

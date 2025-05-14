@@ -16,6 +16,8 @@ from Billing.billing_route import billing
 from Billing.stock_report import lowstock
 from Billing.business_report import report_bp
 from medicine.pharmacy_details import pharm_details
+from action.api import api_bp
+from action.todo import todo
 from flask_mysqldb import MySQL
 import sys
 import os
@@ -23,6 +25,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(__name__, template_folder='package/templates/', static_folder='package/static/', static_url_path='/')
+
 
 mysql = MySQL(app)
 
@@ -51,7 +54,8 @@ app.register_blueprint(billing)
 app.register_blueprint(pharm_details)
 app.register_blueprint(lowstock)
 app.register_blueprint(report_bp)
-
+app.register_blueprint(api_bp)
+app.register_blueprint(todo)
 
 
 

@@ -12,45 +12,50 @@
             <form id="billForm">
                 <div id="medicineRows">
                     <div class="medicine-row row mb-3">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="form-label">Medicine Name</label>
-                            <input type="text" class="form-control medicine-search" placeholder="Search medicine..." id="medicineSearchInput">
+                            <div class="dropdown-container position-relative">
+                                <input type="text" class="form-control medicine-search" placeholder="Search medicine..." id="medicineSearchInput">
                                 <div class="dropdown-list position-absolute w-100 d-none" id="medicineDropdown" style="max-height: 300px; overflow-y: auto; z-index: 1000; background: white; border: 1px solid #ced4da; border-radius: 0.25rem;">
                                     <!-- Options will be populated here dynamically -->
                                 </div>
-                            <select class="form-select medicine-select d-none" name="medicine[]" required id="actualMedicineSelect">
-                                <option value="">Select Medicine</option>
-                                {% for med in med_names %}
-                                <option value="{{ med.id }}" 
-                                        data-price="{{ med.amount }}" 
-                                        data-discount="{{ med.discount }}">
-                                    {{ med.ratelist_name }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                            <input type="hidden" name="medicine[]" id="selectedMedicineId" required>
+                                <select class="form-select medicine-select d-none" name="medicine[]" required id="actualMedicineSelect">
+                                    <option value="">Select Medicine</option>
+                                    {% for med in med_names %}
+                                    <option value="{{ med.id }}" 
+                                            data-price="{{ med.amount }}" 
+                                            data-discount="{{ med.discount }}">
+                                        {{ med.ratelist_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <input type="hidden" name="medicine[]" id="selectedMedicineId" required>
+                            </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <label class="form-label">Quantity</label>
-                            <input type="number" class="form-control quantity" name="quantity[]" min="1" value="1" required>
-                            <!-- Stock warning will be appended here dynamically -->
+                            <input style="padding: 8px;" type="number" class="form-control quantity" name="quantity[]" value="1" min="1" required>
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label">Amount</label>
+                            <label class="form-label">Price</label>
                             <input type="text" class="form-control amount" name="amount[]" readonly>
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label">Discount (%)</label>
-                            <input type="text" class="form-control discount" name="discount[]" readonly>
+                            <label class="form-label">Discount%</label>
+                            <input  type="text" class="form-control discount" name="discount[]" readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Special Discount%</label>
+                            <input type="number" class="form-control special-discount" name="special_discount[]" value="" min="0" max="100">
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Net Amount</label>
                             <input type="text" class="form-control net-amount" name="net_amount[]" readonly>
                         </div>
                         <div class="col-md-1">
-                            <a type="button" class="btn btn-secondary remove-row mt-4">
-                                <i class="bi bi-dash"></i>
-                            </a>
+                            <button type="button" class="btn btn-danger remove-row mt-4" style="display: none;">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -87,70 +92,42 @@
     </div>
 </div>
 
-<style>
-    .text-sm {
-        font-size: 0.875rem;
-    }
-    .text-danger {
-        color: #dc3545;
-    }
-    .text-info {
-        color: #17a2b8;
-    }
-    .is-invalid {
-        border-color: #dc3545;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right calc(0.375em + 0.1875rem) center;
-        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-    }
-    .is-valid {
-        border-color: #28a745;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right calc(0.375em + 0.1875rem) center;
-        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-    }
-</style>
-
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    // Test log to verify script is running
-    console.log('Script initialized');
-    
-    // Get the add row button
-    const addRowBtn = document.getElementById('addRow');
-    const form = document.getElementById('billForm');
-    
-    // Log to verify elements are found
-    console.log('Add Row Button found:', !!addRowBtn);
-    console.log('Form found:', !!form);
-    
-    // Add row button click event
-    if (addRowBtn) {
-        addRowBtn.addEventListener('click', function() {
-            console.log('Add Row button clicked');
-            addNewRow();
-        });
-    }
-    
-    // Form submission
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log('Form submitted');
-            validateBeforeSubmit();
-        });
-    }
-    
-    // Initial setup
-    initializeSearchableDropdowns();
-    setupEventListeners();
-    calculateAllRows();
-    updateRemoveButtons();
-});
-
+        // Test log to verify script is running
+        console.log('Script initialized');
+        
+        // Get the add row button
+        const addRowBtn = document.getElementById('addRow');
+        const form = document.getElementById('billForm');
+        
+        // Log to verify elements are found
+        console.log('Add Row Button found:', !!addRowBtn);
+        console.log('Form found:', !!form);
+        
+        // Add row button click event
+        if (addRowBtn) {
+            addRowBtn.addEventListener('click', function() {
+                console.log('Add Row button clicked');
+                addNewRow();
+            });
+        }
+        
+        // Form submission
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('Form submitted');
+                generateBill();
+            });
+        }
+        
+        // Initial setup
+        initializeSearchableDropdowns();
+        setupEventListeners();
+        calculateAllRows();
+        updateRemoveButtons();
+    });
     
     // Initialize searchable dropdowns for all medicine rows
     function initializeSearchableDropdowns() {
@@ -275,379 +252,243 @@
             }
         });
     }
-
-
-// Function to add a new row
-function addNewRow() {
-    // Get the container and first row
-    const container = document.getElementById('medicineRows');
-    const firstRow = document.querySelector('.medicine-row');
     
-    if (container && firstRow) {
-        // Clone the first row
-        const newRow = firstRow.cloneNode(true);
+    // Function to add a new row
+    function addNewRow() {
+        // Get the container and first row
+        const container = document.getElementById('medicineRows');
+        const firstRow = document.querySelector('.medicine-row');
         
-        // Reset values
-        const selects = newRow.querySelectorAll('select');
-        const inputs = newRow.querySelectorAll('input');
-        
-        selects.forEach(select => select.selectedIndex = 0);
-        inputs.forEach(input => {
-            if (input.type === 'number') {
-                input.value = '1'; // Default quantity
-            } else {
-                input.value = '';
-            }
-        });
-        
-        // Clear any error messages
-        const stockWarning = newRow.querySelector('.stock-warning');
-        if (stockWarning) stockWarning.remove();
-        
-        // Add to container
-        container.appendChild(newRow);
-        console.log('New row added');
-        
-        // Update the UI
-        setupEventListeners();
-        updateRemoveButtons();
-    } else {
-        console.error('Container or row template not found');
-    }
-}
-
-// Setup event listeners for dynamic elements
-function setupEventListeners() {
-    // Medicine selection change
-    document.querySelectorAll('.medicine-select').forEach(select => {
-        select.addEventListener('change', function() {
-            console.log('Medicine selected');
-            const row = this.closest('.medicine-row');
+        if (container && firstRow) {
+            // Clone the first row
+            const newRow = firstRow.cloneNode(true);
             
-            // Get medicine details from API when selected
-            if (this.value) {
-                fetchMedicineDetails(this.value, row);
-            } else {
-                // Clear fields if no medicine selected
-                calculateRow(row);
-            }
-        });
-    });
-    
-    // Quantity change
-    document.querySelectorAll('.quantity').forEach(input => {
-        input.addEventListener('input', function() {
-            console.log('Quantity changed');
-            const row = this.closest('.medicine-row');
-            const select = row.querySelector('.medicine-select');
+            // Reset values
+            const selects = newRow.querySelectorAll('select');
+            const inputs = newRow.querySelectorAll('input');
             
-            if (select.value) {
-                // Validate quantity against available stock
-                validateQuantity(select.value, parseInt(this.value) || 0, row);
-            }
-            
-            calculateRow(row);
-        });
-    });
-    
-    // Remove row buttons
-    document.querySelectorAll('.remove-row').forEach(button => {
-        button.addEventListener('click', function() {
-            console.log('Remove button clicked');
-            if (document.querySelectorAll('.medicine-row').length > 1) {
-                this.closest('.medicine-row').remove();
-                updateRemoveButtons();
-                calculateTotals();
-            }
-        });
-    });
-}
-
-// Fetch medicine details from API
-function fetchMedicineDetails(medicineId, row) {
-    fetch(`/api/get_medicine_details/${medicineId}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log('Medicine details:', data);
-            
-            if (data.success) {
-                // Update data attributes
-                const select = row.querySelector('.medicine-select');
-                const option = select.options[select.selectedIndex];
-                
-                if (option) {
-                    option.setAttribute('data-price', data.data.amount);
-                    option.setAttribute('data-discount', data.data.discount);
-                    option.setAttribute('data-stock', data.data.available_quantity);
+            selects.forEach(select => select.selectedIndex = 0);
+            inputs.forEach(input => {
+                if (input.type === 'number' && input.classList.contains('quantity')) {
+                    input.value = '1'; // Default quantity
+                } else if (input.type === 'number' && input.classList.contains('special-discount')) {
+                    input.value = '0'; // Default special discount
+                } else {
+                    input.value = '';
                 }
-                
-                // Update the quantity input with max attribute
-                const quantityInput = row.querySelector('.quantity');
-                if (quantityInput) {
-                    quantityInput.setAttribute('max', data.data.available_quantity);
-                    // Validate the current quantity against available stock
-                    validateQuantity(medicineId, parseInt(quantityInput.value) || 0, row);
-                }
-                
-                // Add stock warning if present
-                updateStockWarning(row, data.data.stock_warning);
-                
-                // Calculate the row values
-                calculateRow(row);
-            } else {
-                console.error('Error fetching medicine details:', data.message);
-            }
-        })
-        .catch(error => {
-            console.error('API call failed:', error);
-        });
-}
-
-// Validate quantity against available stock
-function validateQuantity(medicineId, quantity, row) {
-    fetch('/api/validate_quantity', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            medicine_id: medicineId,
-            quantity: quantity
-        })
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Quantity validation:', data);
+            });
             
-            const quantityInput = row.querySelector('.quantity');
-            // Update the stock warning
-            updateStockWarning(row, data.message);
+            // Reset search input
+            const searchInput = newRow.querySelector('.medicine-search');
+            if (searchInput) searchInput.value = '';
             
-            // Visual feedback based on validation
-            if (data.valid === false) {
-                quantityInput.classList.add('is-invalid');
-                quantityInput.classList.remove('is-valid');
-            } else {
-                quantityInput.classList.remove('is-invalid');
-                quantityInput.classList.add('is-valid');
-                
-                // Update max attribute in case it wasn't set before
-                if (data.available_quantity) {
-                    quantityInput.setAttribute('max', data.available_quantity);
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Validation API call failed:', error);
-        });
-}
-
-// Update stock warning message
-function updateStockWarning(row, message) {
-    // Remove any existing warning
-    let warningElement = row.querySelector('.stock-warning');
-    if (!warningElement) {
-        warningElement = document.createElement('div');
-        warningElement.className = 'stock-warning text-sm mt-1';
-        row.querySelector('.col-md-2').appendChild(warningElement);
+            // Add to container
+            container.appendChild(newRow);
+            console.log('New row added');
+            
+            // Setup searchable dropdown for the new row
+            setupSearchableDropdown(newRow);
+            
+            // Update the UI
+            setupEventListeners();
+            updateRemoveButtons();
+        } else {
+            console.error('Container or row template not found');
+        }
     }
     
-    // Update message and style
-    if (message && message.includes('Warning')) {
-        warningElement.className = 'stock-warning text-sm mt-1 text-danger';
-        warningElement.textContent = message;
-    } else if (message) {
-        warningElement.className = 'stock-warning text-sm mt-1 text-info';
-        warningElement.textContent = message;
-    } else {
-        warningElement.remove();
+    // Setup event listeners for dynamic elements
+    function setupEventListeners() {
+        // Medicine selection change (through hidden input for searchable dropdown)
+        document.querySelectorAll('input[name="medicine[]"]').forEach(input => {
+            input.addEventListener('change', function() {
+                console.log('Medicine selected (hidden input)');
+                calculateRow(this.closest('.medicine-row'));
+            });
+        });
+        
+        // Original medicine select (kept for compatibility)
+        document.querySelectorAll('.medicine-select').forEach(select => {
+            select.addEventListener('change', function() {
+                console.log('Medicine selected (original)');
+                calculateRow(this.closest('.medicine-row'));
+            });
+        });
+        
+        // Quantity change
+        document.querySelectorAll('.quantity').forEach(input => {
+            input.addEventListener('input', function() {
+                console.log('Quantity changed');
+                calculateRow(this.closest('.medicine-row'));
+            });
+        });
+        
+        // Special discount change
+        document.querySelectorAll('.special-discount').forEach(input => {
+            input.addEventListener('input', function() {
+                console.log('Special discount changed');
+                calculateRow(this.closest('.medicine-row'));
+            });
+        });
+        
+        // Remove row buttons
+        document.querySelectorAll('.remove-row').forEach(button => {
+            button.addEventListener('click', function() {
+                console.log('Remove button clicked');
+                if (document.querySelectorAll('.medicine-row').length > 1) {
+                    this.closest('.medicine-row').remove();
+                    updateRemoveButtons();
+                    calculateTotals();
+                }
+            });
+        });
     }
-}
-
-// Calculate values for a single row
-function calculateRow(row) {
+    
+    // Calculate values for a single row
+   function calculateRow(row) {
     if (!row) return;
-    
+
     const select = row.querySelector('.medicine-select');
+    const hiddenInput = row.querySelector('input[name="medicine[]"]');
     const quantityInput = row.querySelector('.quantity');
     const amountInput = row.querySelector('.amount');
     const discountInput = row.querySelector('.discount');
+    const specialDiscountInput = row.querySelector('.special-discount'); 
     const netAmountInput = row.querySelector('.net-amount');
-    
-    if (select && quantityInput && amountInput && discountInput && netAmountInput) {
-        const selectedOption = select.options[select.selectedIndex];
-        const quantity = parseInt(quantityInput.value) || 0;
-        
+
+    if (quantityInput && amountInput && discountInput && specialDiscountInput && netAmountInput) {
         let price = 0;
         let discount = 0;
-        
+        let selectedOption = null;
+
+      
+        if (hiddenInput && hiddenInput.value) {
+            if (select) {
+                for (let i = 0; i < select.options.length; i++) {
+                    if (select.options[i].value === hiddenInput.value) {
+                        selectedOption = select.options[i];
+                        break;
+                    }
+                }
+            }
+        } else if (select) {
+            selectedOption = select.options[select.selectedIndex];
+        }
+
+        const quantity = parseInt(quantityInput.value) || 0;
+        const specialDiscount = parseFloat(specialDiscountInput.value) || 0; 
+
         if (selectedOption && selectedOption.value) {
             price = parseFloat(selectedOption.getAttribute('data-price')) || 0;
             discount = parseFloat(selectedOption.getAttribute('data-discount')) || 0;
         }
-        
+
         const amount = price * quantity;
-        const discountAmount = (amount * discount) / 100;
-        const netAmount = amount - discountAmount;
-        
+        const regularDiscountAmount = (amount * discount) / 100; 
+        const netAmount = amount - regularDiscountAmount - specialDiscount; 
+
         amountInput.value = amount.toFixed(2);
         discountInput.value = discount.toFixed(2);
         netAmountInput.value = netAmount.toFixed(2);
-        
-        console.log('Row calculated:', { price, quantity, discount, amount, netAmount });
-    }
-    
-    calculateTotals();
-}
 
-// Calculate all rows (for initial load)
-function calculateAllRows() {
-    document.querySelectorAll('.medicine-row').forEach(row => {
-        calculateRow(row);
-    });
-}
-
-// Update totals
-function calculateTotals() {
-    let totalItems = 0;
-    let totalAmount = 0;
-    
-    document.querySelectorAll('.medicine-row').forEach(row => {
-        const quantityInput = row.querySelector('.quantity');
-        const netAmountInput = row.querySelector('.net-amount');
-        
-        if (quantityInput && netAmountInput) {
-            const quantity = parseInt(quantityInput.value) || 0;
-            const netAmount = parseFloat(netAmountInput.value) || 0;
-            
-            totalItems += quantity;
-            totalAmount += netAmount;
-        }
-    });
-    
-    const totalItemsElement = document.getElementById('totalItems');
-    const totalAmountElement = document.getElementById('totalAmount');
-    
-    if (totalItemsElement) totalItemsElement.textContent = totalItems;
-    if (totalAmountElement) totalAmountElement.textContent = totalAmount.toFixed(2);
-    
-    console.log('Totals updated:', { totalItems, totalAmount });
-}
-
-// Update remove buttons visibility
-function updateRemoveButtons() {
-    const rows = document.querySelectorAll('.medicine-row');
-    const buttons = document.querySelectorAll('.remove-row');
-    
-    buttons.forEach(button => {
-        button.style.display = rows.length > 1 ? 'block' : 'none';
-    });
-    
-    console.log('Remove buttons updated, row count:', rows.length);
-}
-
-// Validate all rows before submission
-function validateBeforeSubmit() {
-    let hasErrors = false;
-    let billData = { items: [] };
-    
-    // Check each row for validity
-    document.querySelectorAll('.medicine-row').forEach(row => {
-        const select = row.querySelector('.medicine-select');
-        const quantityInput = row.querySelector('.quantity');
-        
-        if (select && quantityInput && select.value) {
-            const medicineId = select.value;
-            const quantity = parseInt(quantityInput.value) || 0;
-            const selectedOption = select.options[select.selectedIndex];
-            const availableStock = parseInt(selectedOption.getAttribute('data-stock')) || 0;
-            
-            // Check if quantity exceeds available stock
-            if (quantity > availableStock) {
-                quantityInput.classList.add('is-invalid');
-                updateStockWarning(row, `Warning: Cannot select quantity more than available stock. Only ${availableStock} units available.`);
-                hasErrors = true;
-            }
-            
-            // Add to bill data for submission
-            billData.items.push({
-                medicine_id: medicineId,
-                medicine_name: selectedOption.textContent.trim(),
-                quantity: quantity,
-                amount: row.querySelector('.amount').value,
-                discount: row.querySelector('.discount').value,
-                net_amount: row.querySelector('.net-amount').value
-            });
-        }
-    });
-    
-    if (hasErrors) {
-        alert('Please correct the errors before submitting. Some quantities exceed available stock.');
-        return;
-    }
-    
-    // Send to backend for final validation and processing
-    fetch('/api/calculate_bill', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(billData)
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Bill calculation result:', data);
-            
-            if (data.success) {
-                // Complete the bill generation
-                generateBill();
-            } else {
-                // Show error messages
-                alert(`Error: ${data.message}\n\n${data.warnings ? data.warnings.join('\n') : ''}`);
-            }
-        })
-        .catch(error => {
-            console.error('Bill calculation API call failed:', error);
-            alert('Failed to calculate bill. Please try again.');
+        console.log('Row calculated:', {
+            price,
+            quantity,
+            discount,
+            specialDiscount,
+            amount,
+            regularDiscountAmount,
+            netAmount
         });
+    }
+
+    calculateTotals(); 
 }
 
-// Generate the bill
-function generateBill() {
-    const billData = {
-        items: [],
-        summary: {
-            totalItems: document.getElementById('totalItems').textContent,
-            totalAmount: document.getElementById('totalAmount').textContent
-        }
-    };
     
-    document.querySelectorAll('.medicine-row').forEach(row => {
-        const select = row.querySelector('.medicine-select');
-        const quantityInput = row.querySelector('.quantity');
+    // Calculate all rows (for initial load)
+    function calculateAllRows() {
+        document.querySelectorAll('.medicine-row').forEach(row => {
+            calculateRow(row);
+        });
+    }
+    
+    // Update totals
+    function calculateTotals() {
+        let totalItems = 0;
+        let totalAmount = 0;
         
-        if (select && quantityInput && select.value) {
-            const selectedOption = select.options[select.selectedIndex];
+        document.querySelectorAll('.medicine-row').forEach(row => {
+            const quantityInput = row.querySelector('.quantity');
+            const netAmountInput = row.querySelector('.net-amount');
             
-            billData.items.push({
-                medicine_id: select.value,
-                medicine_name: selectedOption.textContent.trim(),
-                quantity: quantityInput.value,
-                amount: row.querySelector('.amount').value,
-                discount: row.querySelector('.discount').value,
-                net_amount: row.querySelector('.net-amount').value
-            });
-        }
-    });
+            if (quantityInput && netAmountInput) {
+                const quantity = parseInt(quantityInput.value) || 0;
+                const netAmount = parseFloat(netAmountInput.value) || 0;
+                
+                totalItems += quantity;
+                totalAmount += netAmount;
+            }
+        });
+        
+        const totalItemsElement = document.getElementById('totalItems');
+        const totalAmountElement = document.getElementById('totalAmount');
+        
+        if (totalItemsElement) totalItemsElement.textContent = totalItems;
+        if (totalAmountElement) totalAmountElement.textContent = totalAmount.toFixed(2);
+        
+        console.log('Totals updated:', { totalItems, totalAmount });
+    }
     
-    console.log('Bill Data:', billData);
-    console.log('Bill Data JSON:', JSON.stringify(billData, null, 2));
+    // Update remove buttons visibility
+    function updateRemoveButtons() {
+        const rows = document.querySelectorAll('.medicine-row');
+        const buttons = document.querySelectorAll('.remove-row');
+        
+        buttons.forEach(button => {
+            button.style.display = rows.length > 1 ? 'block' : 'none';
+        });
+        
+        console.log('Remove buttons updated, row count:', rows.length);
+    }
     
-    // Show bill data in alert (for testing)
-    alert('Bill Generated!\n\n' + JSON.stringify(billData, null, 2));
-    
-    return billData;
-}
+    // Generate the bill
+    function generateBill() {
+        const billData = {
+            items: [],
+            summary: {
+                totalItems: document.getElementById('totalItems').textContent,
+                totalAmount: document.getElementById('totalAmount').textContent
+            }
+        };
+        
+        document.querySelectorAll('.medicine-row').forEach(row => {
+            const hiddenInput = row.querySelector('input[name="medicine[]"]');
+            const searchInput = row.querySelector('.medicine-search');
+            const quantityInput = row.querySelector('.quantity');
+            const specialDiscountInput = row.querySelector('.special-discount');
+            
+            if (hiddenInput && hiddenInput.value && quantityInput) {
+                billData.items.push({
+                    medicine_id: hiddenInput.value,
+                    medicine_name: searchInput ? searchInput.value : "Unknown Medicine",
+                    quantity: quantityInput.value,
+                    amount: row.querySelector('.amount').value,
+                    discount: row.querySelector('.discount').value,
+                    special_discount: specialDiscountInput ? specialDiscountInput.value : "0",
+                    net_amount: row.querySelector('.net-amount').value
+                });
+            }
+        });
+        
+        console.log('Bill Data:', billData);
+        console.log('Bill Data JSON:', JSON.stringify(billData, null, 2));
+        
+        // Show bill data in alert (for testing)
+        alert('Bill Generated!\n\n' + JSON.stringify(billData, null, 2));
+        
+        return billData;
+    }
     </script>
 
 {% endblock %}

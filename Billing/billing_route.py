@@ -88,6 +88,7 @@ def validate_quantity():
         data = request.get_json()
         medicine_id = data.get('medicine_id')
         quantity = int(data.get('quantity', 0))
+        print(quantity,'qua')
 
         if not all([medicine_id, quantity]):
             return jsonify({
@@ -123,6 +124,7 @@ def validate_quantity():
             
             stock_result = cur.fetchone()
             available_quantity = int(stock_result['available_quantity']) if stock_result and stock_result['available_quantity'] else 0
+            print(available_quantity,'ghdgf')
             
             if quantity > available_quantity:
                 # Return a warning message with available quantity
