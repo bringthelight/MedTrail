@@ -1,0 +1,82 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<div class="container-fluid mt-9">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x"
+                viewBox="0 0 16 16">
+                <path
+                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+            </svg></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center pb-0">
+                    <h6>Expiring Medicines Report</h6>
+                    <button class="btn bg-gradient-primary" onclick="exportExpiredMedicines()" {% if not medicines
+                        %}disabled{% endif %}>
+                        <i class="fas fa-download me-2"></i>Download Report
+                    </button>
+                </div>
+                <div class="card-body px-3 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table id="expiry-report" class="table table-sm table-striped align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Medicine Name</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Batch Number</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quantity</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Expiry Date</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Days Until Expiry</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for med in medicines %}
+                                <tr>
+                                    <td>{{ med.medicine_name }}</td>
+                                    <td>{{ med.batch_number }}</td>
+                                    <td>{{ med.quantity }}</td>
+                                    <td>{{ med.expiry_date }}</td>
+                                    <td>{{ med.days_until_expiry }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#expiry-report').DataTable({
+            "order": [[4, "asc"]], // Sort by days until expiry by default
+            "pageLength": 25,
+            "initComplete": function (settings, json) {
+                // Check if table is empty after initialization
+                let rowCount = table.rows().count();
+                $('#downloadBtn').prop('disabled', rowCount === 0);
+            }
+        });
+    });
+
+    function exportExpiredMedicines() {
+        window.location.href = "{{ url_for('expiry_report.download_report') }}";
+    }
+</script>
+{% endblock %}

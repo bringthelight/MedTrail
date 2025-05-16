@@ -242,4 +242,40 @@
   }
 </script>
 
+<script>
+    function setMinDate() {
+        const today = new Date();
+        today.setDate(today.getDate() + 1); // Set to tomorrow
+        
+        // Format date as YYYY-MM-DD
+        const tomorrow = today.toISOString().split('T')[0];
+        
+        // Get all date input fields
+        const dateInputs = document.querySelectorAll('input[type="date"]');
+        
+        dateInputs.forEach(input => {
+            // Set minimum date to tomorrow
+            input.setAttribute('min', tomorrow);
+            
+            // Add event listener to validate on change
+            input.addEventListener('change', function(e) {
+                const selectedDate = new Date(this.value);
+                const currentDate = new Date();
+                
+                // Reset time part for accurate date comparison
+                selectedDate.setHours(0, 0, 0, 0);
+                currentDate.setHours(0, 0, 0, 0);
+                
+                if (selectedDate <= currentDate) {
+                    alert('Please select a future date for expiry');
+                    this.value = ''; // Clear invalid date
+                }
+            });
+        });
+    }
+
+    // Call function when document loads
+    document.addEventListener('DOMContentLoaded', setMinDate);
+</script>
+
 {% endblock %}

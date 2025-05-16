@@ -16,6 +16,7 @@ from Billing.billing_route import billing
 from Billing.stock_report import lowstock
 from Billing.business_report import report_bp
 from medicine.pharmacy_details import pharm_details
+from reports.expiry_report import expiry_report
 from action.api import api_bp
 from action.todo import todo
 from flask_mysqldb import MySQL
@@ -56,6 +57,7 @@ app.register_blueprint(lowstock)
 app.register_blueprint(report_bp)
 app.register_blueprint(api_bp)
 app.register_blueprint(todo)
+app.register_blueprint(expiry_report)
 
 
 
