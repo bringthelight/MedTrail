@@ -31,6 +31,8 @@
   <link href="soft-ui-dashboard-main/css/nucleo-svg.css" rel="stylesheet" />
   <!-- Library for Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- CSS for Data Table -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
@@ -47,7 +49,7 @@
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
 
-  
+
 </head>
 
 
@@ -58,17 +60,18 @@
       {% if session['user'] %}
       <a class="d-flex align-items-center text-secondary dropdown-toggle" href="#" id="userDropdown"
         data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://imgs.search.brave.com/y3hKHaQFUJLeAEC_2JWu_h3nU6o851RqxQsWfAuxNek/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzL2FhL2M4/L2M5L2FhYzhjOWU4/NmUxNWViN2M2Yjg3/MjE4ZmQ2MzdiMWQ2/LmpwZw"
+        <img
+          src="https://imgs.search.brave.com/y3hKHaQFUJLeAEC_2JWu_h3nU6o851RqxQsWfAuxNek/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzL2FhL2M4/L2M5L2FhYzhjOWU4/NmUxNWViN2M2Yjg3/MjE4ZmQ2MzdiMWQ2/LmpwZw"
           alt="avatar" width="40" height="40" class="rounded-circle me-2">
         <strong>{{ session['pharmacy']['pharmacy_name'] }}</strong>
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="userDropdown">
         <li><a class="dropdown-item" href="{{ url_for('users_bp.users') }}">User List</a></li>
       </ul>
-        
+
       {% endif %}
     </div>
-    
+
 
     <!-- <div class="sidenav-header">
          <div class="sidenav-header">
@@ -81,9 +84,9 @@
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
       <ul class="navbar-nav">
         {% if session['user'] %}
-          <li class="nav-item" style="margin-top: 300px;">
+        <li class="nav-item" style="margin-top: 300px;">
           {% else %}
-          <li class="nav-item" style="margin-top: 350px;">
+        <li class="nav-item" style="margin-top: 350px;">
           {% endif %}
           <a class="nav-link" href="{{ url_for('auth_bp.dashboard') }}">
             <div
@@ -113,29 +116,33 @@
 
 
         <!-- Replace only the dropdown menu section -->
-<li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-      <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <title>shop</title>
-        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-          <g transform="translate(-1716.000000, -439.000000)" fill="#FFFFFF" fill-rule="nonzero">
-            <g transform="translate(1716.000000, 291.000000)">
-              <g transform="translate(0.000000, 148.000000)">
-                <path class="color-background" d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"></path>
-              </g>
-            </g>
-          </g>
-        </g>
-      </svg>
-    </div>
-    <span class="nav-link-text ms-1">Master Management</span>
-  </a>
-  <ul class="dropdown-menu mx-5">
-    <li><a class="dropdown-item" href="{{ url_for('meds.meds') }}">Medicine Types</a></li>
-    <li><a class="dropdown-item" href="{{url_for('data_fetch.fetch')}}">Medicine Units</a></li>
-  </ul>
-</li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div
+              class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>shop</title>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g transform="translate(-1716.000000, -439.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <g transform="translate(1716.000000, 291.000000)">
+                      <g transform="translate(0.000000, 148.000000)">
+                        <path class="color-background"
+                          d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z">
+                        </path>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Master Management</span>
+          </a>
+          <ul class="dropdown-menu mx-5">
+            <li><a class="dropdown-item" href="{{ url_for('meds.meds') }}">Medicine Types</a></li>
+            <li><a class="dropdown-item" href="{{url_for('data_fetch.fetch')}}">Medicine Units</a></li>
+          </ul>
+        </li>
 
 
         <!-- <li class="nav-item">
@@ -353,7 +360,7 @@
                           d="M20.4472136,21.5347318 L1.4472136,12.0347318 C0.953235098,11.7877425 0.352562058,11.9879669 0.105572809,12.4819454 C0.0361450918,12.6208008 6.47121774e-16,12.7739139 0,12.929159 L0,30.1875 L0,30.1875 C0,30.6849375 0.280875,31.1390625 0.7258125,31.3621875 L19.5528096,40.7750766 C20.0467945,41.0220531 20.6474623,40.8218132 20.8944388,40.3278283 C20.963859,40.1889789 21,40.0358742 21,39.8806379 L21,22.429159 C21,22.0503869 20.7859976,21.7041238 20.4472136,21.5347318 Z">
                         </path>
                       </g>
-                    </g>  
+                    </g>
                   </g>
                 </g>
               </svg>
@@ -451,14 +458,18 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <div
+              class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>shop</title>
                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                   <g transform="translate(-1716.000000, -439.000000)" fill="#FFFFFF" fill-rule="nonzero">
                     <g transform="translate(1716.000000, 291.000000)">
                       <g transform="translate(0.000000, 148.000000)">
-                        <path class="color-background" d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"></path>
+                        <path class="color-background"
+                          d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z">
+                        </path>
                       </g>
                     </g>
                   </g>
@@ -640,17 +651,223 @@
             {% endif %}
             {% endwith %}
 
-            <h1 class="display-4">Welcome to HealEasy</h1>
-            <p class="lead">Your Medical Journey Starts Here</p>
+            <!-- <h1 class="display-4">Welcome to HealEasy</h1>
+            <p class="lead">Your Medical Journey Starts Here</p> -->
           </div>
         </div>
       </div>
     </div>
 
 
+
+    <div class="charts my-3">
+      <div class="row" style="margin-left: 150px;">
+        <!-- First Row -->
+        <div class="col-md-3">
+          <div class="card text-danger">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h4 class="fw-bold">₹10,500</h4>
+                <small class="text-uppercase">Total Income</small>
+              </div>
+              <i class="bi bi-currency-rupee fs-2"></i>
+            </div>
+            <div class="stat-footer text-danger d-flex justify-content-between align-items-center rounded mt-3 px-3 py-2">
+              <small>20% increase</small>
+              <i class="bi bi-caret-up-fill"></i>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card text-primary">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h4 class="fw-bold">584</h4>
+                <small class="text-uppercase">Today's Income</small>
+              </div>
+              <i class="bi bi-currency-rupee fs-2"></i>
+            </div>
+            <div class="stat-footer text-primary d-flex justify-content-between align-items-center rounded mt-3 px-3 py-2">
+              <small>3% increase</small>
+              <i class="bi bi-caret-up-fill"></i>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card text-indigo">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h4 class="fw-bold">{{ medicine_count }}</h4>
+               
+                <small class="text-uppercase">Inventory</small>
+              </div>
+              <i class="bi bi-capsule fs-2"></i>
+            </div>
+            <div class="stat-footer text-secondary d-flex justify-content-between align-items-center rounded mt-3 px-3 py-2">
+              <small>10% increase</small>
+              <i class="bi bi-caret-up-fill"></i>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card text-success">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h4 class="fw-bold">3,500</h4>
+                <small class="text-uppercase">Visitors</small>
+              </div>
+              <i class="bi bi-geo-alt fs-2"></i>
+            </div>
+            <div class="stat-footer text-success d-flex justify-content-between align-items-center rounded mt-3 px-3 py-2">
+              <small>5% decrease</small>
+              <i class="bi bi-caret-down-fill"></i>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="charts my-6">
+      <div class="row mt-4">
+        <div class="col-md-2"></div>
+        <div class="col-md-5">
+          <div class="card rounded-4 shadow-lg p-4">
+            <div class="card-body">
+              <div>
+                <canvas id="myChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-5">
+          <div class="card rounded-4 shadow-lg p-4">
+            <div class="card-body">
+              <div>
+                <canvas id="myChart2"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const ctx = document.getElementById('myChart');
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          datasets: [{
+            label: '# of Votes',
+            borderColor: '#FB6340', // Primary theme color
+            backgroundColor: 'rgba(251, 99, 64, 0.2)',
+            data: [12, 19, 3, 5, 2, 3],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+
+      const ctx2 = document.getElementById('myChart2');
+
+      new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          datasets: [{
+            label: '# of Votes',
+            borderColor: '#FB6340', // Primary theme color
+            backgroundColor: 'rgba(251, 99, 64, 0.2)',
+            data: [12, 19, 10, 3, 9, 7],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    </script>
+
+    <script>
+      var canvasElement = document.getElementById('myChart');
+
+      var config = {
+        type: 'bar',
+        data: data,
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        },
+      };
+
+      const labels = Utils.months({ count: 7 });
+      const data = {
+        labels: labels,
+        datasets: [{
+          label: 'My First Dataset',
+          data: [65, 59, 80, 81, 56, 55, 40],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(201, 203, 207, 0.2)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(201, 203, 207)'
+          ],
+          borderWidth: 1
+        }]
+      };
+
+    </script>
+
     <!--  -->
 
-  {% endblock %}
+    {% endblock %}
 
 
 
@@ -664,265 +881,178 @@
 
 
 
-  <!--   Core JS Files   -->
-  <script src="soft-ui-dashboard-main/assets/js/core/popper.min.js"></script>
-  <script src="soft-ui-dashboard-main/assets/js/core/bootstrap.min.js"></script>
-  <script src="soft-ui-dashboard-main/assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="soft-ui-dashboard-main/assets/js/plugins/smooth-scrollbar.min.js"></script>
-  <script src="soft-ui-dashboard-main/assets/js/plugins/chartjs.min.js"></script>
+    <!--   Core JS Files   -->
+    <script src="soft-ui-dashboard-main/assets/js/core/popper.min.js"></script>
+    <script src="soft-ui-dashboard-main/assets/js/core/bootstrap.min.js"></script>
+    <script src="soft-ui-dashboard-main/assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="soft-ui-dashboard-main/assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="soft-ui-dashboard-main/assets/js/plugins/chartjs.min.js"></script>
 
-  <!-- JS for Data Table -->
-  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-  <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap4.js"></script>
+    <!-- JS for Data Table -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap4.js"></script>
 
-  <!-- script for data table -->
-  <script>
-    new DataTable('#meds', {
-      scrollX: true,
-      scrollY: true
-    });
-  </script>
-  <script>
-    new DataTable('#medicine_inventory', {
-      scrollX: true,
-      scrollY: true
-    });
-  </script>
-
-
-<script>
-  new DataTable('#brands')
-</script>
-<script>
-  new DataTable('#med',{
-    scrollX: true,
-    scrollY: true
-});
-</script>
-
-
-
-  <script>
-    var ctx = document.getElementById("chart-bars").getContext("2d");
-
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-          label: "Sales",
-          tension: 0.4,
-          borderWidth: 0,
-          borderRadius: 4,
-          borderSkipped: false,
-          backgroundColor: "#fff",
-          data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
-          maxBarThickness: 6
-        },],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-            },
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: 500,
-              beginAtZero: true,
-              padding: 15,
-              font: {
-                size: 14,
-                family: "Inter",
-                style: 'normal',
-                lineHeight: 2
-              },
-              color: "#fff"
-            },
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false
-            },
-            ticks: {
-              display: false
-            },
-          },
-        },
-      },
-    });
-
-
-    var ctx2 = document.getElementById("chart-line").getContext("2d");
-
-    var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
-    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
-
-    var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
-    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
-
-    new Chart(ctx2, {
-      type: "line",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-          label: "Mobile apps",
-          tension: 0.4,
-          borderWidth: 0,
-          pointRadius: 0,
-          borderColor: "#cb0c9f",
-          borderWidth: 3,
-          backgroundColor: gradientStroke1,
-          fill: true,
-          data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-          maxBarThickness: 6
-
-        },
-        {
-          label: "Websites",
-          tension: 0.4,
-          borderWidth: 0,
-          pointRadius: 0,
-          borderColor: "#3A416F",
-          borderWidth: 3,
-          backgroundColor: gradientStroke2,
-          fill: true,
-          data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
-          maxBarThickness: 6
-        },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5]
-            },
-            ticks: {
-              display: true,
-              padding: 10,
-              color: '#b2b9bf',
-              font: {
-                size: 11,
-                family: "Inter",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              borderDash: [5, 5]
-            },
-            ticks: {
-              display: true,
-              color: '#b2b9bf',
-              padding: 20,
-              font: {
-                size: 11,
-                family: "Inter",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
-  </script>
-  <script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
-      }
-      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
-  </script>
-  <!-- Github buttons -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="soft-ui-dashboard-main/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
-  <script>
-    // Auto-hide alerts after 2 seconds
-    document.addEventListener('DOMContentLoaded', function () {
-      const alerts = document.querySelectorAll('.alert');
-      alerts.forEach(function (alert) {
-        setTimeout(function () {
-          // Create fade out effect
-          alert.classList.remove('show');
-          alert.classList.add('fade');
-
-          // Remove alert after fade animation
-          setTimeout(function () {
-            alert.remove();
-          }, 150);
-        }, 2000); // 2000ms = 2 seconds
+    <!-- script for data table -->
+    <script>
+      new DataTable('#meds', {
+        scrollX: true,
+        scrollY: true
       });
-    });
-  </script>
+    </script>
+    <script>
+      new DataTable('#medicine_inventory', {
+        scrollX: true,
+        scrollY: true
+      });
+    </script>
 
-  <!-- Phone number validations -->
-  <script>
-    const phoneInput = document.getElementById('phone');
 
-    phoneInput.addEventListener('input', function () {
-      // Remove all non-digit characters
-      let digits = this.value.replace(/\D/g, '');
+    <script>
+      new DataTable('#brands')
+    </script>
+    <script>
+      new DataTable('#med', {
+        scrollX: true,
+        scrollY: true
+      });
+    </script>
 
-      // Limit to first 10 digits
-      if (digits.length > 10) {
-        digits = digits.slice(0, 10);
+
+
+    <script>
+      var ctx3 = document.getElementById("chart-bars").getContext("2d");
+
+      new Chart(ctx3, {
+        type: "bar",
+        data: {
+          labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          datasets: [{
+            label: "Sales",
+            tension: 0.4,
+            borderWidth: 0,
+            borderRadius: 4,
+            borderSkipped: false,
+            backgroundColor: "#fff",
+            data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+            maxBarThickness: 6
+          },],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            }
+          },
+          interaction: {
+            intersect: false,
+            mode: 'index',
+          },
+          scales: {
+            y: {
+              grid: {
+                drawBorder: false,
+                display: false,
+                drawOnChartArea: false,
+                drawTicks: false,
+              },
+              ticks: {
+                suggestedMin: 0,
+                suggestedMax: 500,
+                beginAtZero: true,
+                padding: 15,
+                font: {
+                  size: 14,
+                  family: "Inter",
+                  style: 'normal',
+                  lineHeight: 2
+                },
+                color: "#fff"
+              },
+            },
+            x: {
+              grid: {
+                drawBorder: false,
+                display: false,
+                drawOnChartArea: false,
+                drawTicks: false
+              },
+              ticks: {
+                display: false
+              },
+            },
+          },
+        },
+      });
+
+
+      var ctx4 = document.getElementById("chart-line").getContext("2d");
+
+      var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+      gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+      gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+      gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+      var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+      gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+      gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+      gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+
+    </script>
+    <script>
+      var win = navigator.platform.indexOf('Win') > -1;
+      if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+          damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
       }
+    </script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="soft-ui-dashboard-main/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+    <script>
+      // Auto-hide alerts after 2 seconds
+      document.addEventListener('DOMContentLoaded', function () {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function (alert) {
+          setTimeout(function () {
+            // Create fade out effect
+            alert.classList.remove('show');
+            alert.classList.add('fade');
 
-      this.value = digits;
-    });
-  </script>
+            // Remove alert after fade animation
+            setTimeout(function () {
+              alert.remove();
+            }, 150);
+          }, 2000); // 2000ms = 2 seconds
+        });
+      });
+    </script>
+
+    <!-- Phone number validations -->
+    <script>
+      const phoneInput = document.getElementById('phone');
+
+      phoneInput.addEventListener('input', function () {
+        // Remove all non-digit characters
+        let digits = this.value.replace(/\D/g, '');
+
+        // Limit to first 10 digits
+        if (digits.length > 10) {
+          digits = digits.slice(0, 10);
+        }
+
+        this.value = digits;
+      });
+    </script>
 </body>
 
 </html>

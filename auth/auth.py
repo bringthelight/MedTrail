@@ -9,9 +9,21 @@ mysql = MySQL()
 def dashboard():
     cur = mysql.connection.cursor()
     if request.method == "GET":
-        cur.execute("SELECT * FROM master_medicine_type")
-        med = cur.fetchall()
-        return render_template('dashboard.html', data=med)
+        cur.execute("SELECT COUNT(*) AS count FROM master_medicine")
+        result = cur.fetchone()
+        
+        try:
+            if isinstance(result, dict):
+                medicine_count = result['count']
+            else:
+                medicine_count = result[0]
+        except (KeyError, IndexError):
+            medicine_count = 0
+            
+        cur.close()
+        return render_template('dashboard.html', medicine_count=medicine_count)
+
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
