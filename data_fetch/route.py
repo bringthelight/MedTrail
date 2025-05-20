@@ -1,9 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
-from flask import Blueprint
-from flask_mysqldb import MySQLdb,MySQL
+from flask import Flask, render_template, request, redirect, url_for, flash, session, Blueprint
+from extensions import mysql
 
-mysql=MySQL()
-data_fetch= Blueprint('data_fetch',__name__)
+data_fetch = Blueprint('data_fetch', __name__)
 
 @data_fetch.route('/fetch',methods=['GET','POST'])
 def fetch():

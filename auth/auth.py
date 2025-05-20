@@ -1,17 +1,28 @@
 from flask import render_template, request, redirect, url_for, flash, session, abort, Blueprint
-from flask_mysqldb import MySQL
+from extensions import mysql
 from auth.util import hash_pass, verify_pass  
 
 auth_bp = Blueprint('auth_bp', __name__)
-mysql = MySQL()
 
 @auth_bp.route('/', methods=['GET', 'POST'])
 def dashboard():
     cur = mysql.connection.cursor()
     if request.method == "GET":
-        cur.execute("SELECT * FROM master_medicine_type")
-        med = cur.fetchall()
-        return render_template('dashboard.html', data=med)
+        cur.execute("SELECT COUNT(*) AS count FROM master_medicine")
+        result = cur.fetchone()
+        
+        try:
+            if isinstance(result, dict):
+                medicine_count = result['count']
+            else:
+                medicine_count = result[0]
+        except (KeyError, IndexError):
+            medicine_count = 0
+            
+        cur.close()
+        return render_template('dashboard.html', medicine_count=medicine_count)
+
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():

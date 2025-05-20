@@ -1,11 +1,9 @@
-from flask import render_template, request, redirect, url_for, flash, session
-from flask import Blueprint
-from flask_mysqldb import MySQL
+from flask import render_template, request, redirect, url_for, flash, session, Blueprint
+from extensions import mysql
 from datetime import datetime
 from auth.util import hash_pass, verify_pass 
 
 users_bp = Blueprint('users_bp', __name__)
-mysql = MySQL()
 
 @users_bp.route('/users', methods=['GET', 'POST'])
 def users():

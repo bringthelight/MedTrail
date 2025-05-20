@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from flask_mysqldb import MySQL
+from extensions import mysql
 from datetime import datetime
 
-ratelist= Blueprint('ratelist', __name__)
-mysql = MySQL()
+ratelist = Blueprint('ratelist', __name__)
 
 
 @ratelist.route('/med_ratelist', methods=['GET', 'POST'])

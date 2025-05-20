@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from flask_mysqldb import MySQL
+from extensions import mysql
 from datetime import datetime
 
 medstock = Blueprint('medstock', __name__)
-mysql = MySQL()
 
 @medstock.route('/medstocks', methods=['GET', 'POST'])
 def stock():

@@ -1,11 +1,8 @@
-from flask import render_template, request, redirect, url_for, flash, session
-from flask import Blueprint
-from flask_mysqldb import MySQL
+from flask import render_template, request, redirect, url_for, flash, session, Blueprint
+from extensions import mysql
 from datetime import datetime
 
 pharm_name = Blueprint('pharm_name', __name__)
-
-mysql = MySQL()
 
 @pharm_name.route('/medicines', methods=['GET'])
 def med_details():

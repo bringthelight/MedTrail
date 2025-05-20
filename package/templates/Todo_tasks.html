@@ -1,9 +1,13 @@
 {% extends "dashboard.html" %}
 
 {% block content %}
-<div class="container-fluid mt-10 px-12">
-  <div class="row float-end">
-    <div class="col-12">
+
+<!-- Add these lines after the existing CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+
+<div class="container-fluid mt-9">
+ 
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
       {% for category, message in messages %}
@@ -19,7 +23,11 @@
       {% endfor %}
       {% endif %}
       {% endwith %}
-      <div class="card mb-4">
+
+      <div class="row">
+        <div class="col-md-2"></div>
+          <div class="col-md-10 px-5">
+            <div class="card mb-4">
         <div class="card-header pb-0 d-flex justify-content-between">
           <h6>Special Orders</h6>
           <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#addTaskModal">
@@ -28,7 +36,7 @@
         </div>
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">
-            <table class="table align-items-center mb-0">
+            <table class="table align-items-center mb-0 px-3" id="tasksTable">
               <thead>
                 <tr>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Medicine Name</th>
@@ -70,10 +78,10 @@
                               <div class="mb-3">
                                 <label for="edit_medicine_name" class="form-label">Medicine Name <span
                                     class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="edit_medicine_name" value="" required>
+                                <input type="text" class="form-control" id="edit_medicine_name" value="{{ task.medicine_name }}" required>
                               </div>
                               <div class="mb-3">
-                                <label for="edit_description" class="form-label">Description</label>{{ task.medicine_name }}
+                                <label for="edit_description" class="form-label">Description</label>
                                 <textarea class="form-control" id="edit_description" name="description"
                                   rows="3"></textarea>
                               </div>
@@ -118,8 +126,9 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+          </div>
+      </div>
+      
 </div>
 
 <!-- Add Task Modal -->
@@ -190,6 +199,49 @@
         .then(() => window.location.reload());
     }
   }
+</script>
+
+<!-- DataTables JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#tasksTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        order: [[0, 'asc']],
+        language: {
+           search: "_INPUT_",
+            searchPlaceholder: "Search records",
+            lengthMenu: '<span class="px-2">Show _MENU_ entries</span>',
+            info: '<span class="px-2">Showing _START_ to _END_ of _TOTAL_ entries</span>',
+            paginate: {
+                first: '<span class="px-2"><<</span>',
+                last: '<span class="px-2">>></span>',
+                next: '<span class="px-2"><</span>',
+                previous: '<span class="px-2">></span>'
+            }
+        },
+        dom: '<"row"<"col-md-6"l><"col-md-6 text-end"f>>' +
+             '<"row"<"col-sm-12"tr>>' +
+             '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        columnDefs: [
+            {
+                targets: -1,
+                orderable: false,
+                searchable: false
+            }
+        ]
+    });
+});
 </script>
 
 <script>

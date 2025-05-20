@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from flask_mysqldb import MySQL
+from extensions import mysql
 
 delete_bp = Blueprint('delete_bp', __name__)
-mysql = MySQL()
 
 @delete_bp.route('/type/delete', methods=['GET'])
 def delete():
