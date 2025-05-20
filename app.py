@@ -10,13 +10,13 @@ def create_app(config_class=DevelopmentConfig):
                 static_folder='package/static/', 
                 static_url_path='/')
 
-    # Apply configuration
+    
     app.config.from_object(config_class)
     
-    # Initialize extensions
+    
     mysql.init_app(app)
 
-    # Register all blueprints
+  
     from blueprints import register_blueprints
     register_blueprints(app)
 

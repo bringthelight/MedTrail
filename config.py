@@ -10,10 +10,10 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
 
-class ProductionConfig(Config):
-    DEBUG = False
+# class ProductionConfig(Config):
+#     DEBUG = False
 
-class TestingConfig(Config):
-    TESTING = True
-    # Use a separate test database
-    MYSQL_DB = 'healtrail_pharmacy_test'
+# class TestingConfig(Config):
+#     TESTING = True
+#     # Use a separate test database
+#     MYSQL_DB = 'healtrail_pharmacy_test'
